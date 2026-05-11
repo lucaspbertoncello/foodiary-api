@@ -1,0 +1,30 @@
+org: moullxndev
+service: foodiary-api
+
+provider:
+  name: aws
+  region: sa-east-1
+  runtime: nodejs22.x
+  architecture: arm64
+  memorySize: 128
+
+package:
+  individually: true
+
+build:
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: false
+    exclude:
+      - "@aws-sdk/*"
+    external:
+      - "@aws-sdk/*"
+
+functions:
+  hello:
+    handler: src/hello.handler
+    events:
+      - httpApi:
+          path: /
+          method: GET
