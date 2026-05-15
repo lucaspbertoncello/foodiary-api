@@ -11,7 +11,9 @@ import { ZodError } from "zod";
 export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHttpAdapter.ControllerImpl }) {
   return async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
     try {
-      const controllerInstance = Registry.getInstance().resolve(controllerImpl);
+      const container = Registry.getInstance();
+      container.register(controllerImpl);
+      const controllerInstance = container.resolve(controllerImpl);
 
       const body = lambdaBodyParser(event.body);
       const headers = event.headers ?? {};
