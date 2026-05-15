@@ -40,13 +40,13 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
       }
 
       console.error(error);
-    }
 
-    return lambdaErrorResponse({
-      statusCode: 500,
-      code: ErrorCode.INTERNAL_SERVER_ERROR,
-      message: "Internal server error.",
-    });
+      return lambdaErrorResponse({
+        statusCode: 500,
+        code: ErrorCode.INTERNAL_SERVER_ERROR,
+        message: "Internal server error.",
+      });
+    }
   };
 }
 
