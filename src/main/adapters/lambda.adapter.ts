@@ -38,6 +38,8 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
       if (error instanceof HttpError) {
         return lambdaErrorResponse(error);
       }
+
+      console.error(error);
     }
 
     return lambdaErrorResponse({

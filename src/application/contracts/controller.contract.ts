@@ -1,38 +1,40 @@
 import { getSchema } from "@kernel/decorators/schema.decorator";
 
-export abstract class Controller<TBody = undefined> {
-  protected abstract handle(request: Controller.HttpRequest): Promise<Controller.HttpResponse<TBody>>;
+export abstract class Controller<TControllerResponse = undefined> {
+  protected abstract handle(
+    request: Controller.HttpRequest,
+  ): Promise<Controller.HttpResponse<TControllerResponse>>;
 
-  public execute(request: Controller.HttpRequest): Promise<Controller.HttpResponse<TBody>> {
+  public execute(request: Controller.HttpRequest): Promise<Controller.HttpResponse<TControllerResponse>> {
     const body = this.validateBody(request.body);
     return this.handle({ ...request, body });
   }
 
-  private validateBody(body: Controller.HttpRequest["body"]) {
+  private validateBody(body: Controller.HttpRequest["body"]): Record<string, unknown> {
     const schema = getSchema(this);
 
     if (!schema) {
       return body;
     }
 
-    return schema.parse(body);
+    return schema.parse(body) as Record<string, unknown>;
   }
 }
 
 export namespace Controller {
   export interface HttpRequest<
-    TBody extends Record<string, unknown> | unknown = unknown,
-    THeaders extends Record<string, unknown> | unknown = unknown,
-    TParams extends Record<string, unknown> | unknown = unknown,
-    TQueryParams extends Record<string, unknown> | unknown = unknown,
+    TBody = Record<string, unknown>,
+    THeaders = Record<string, unknown>,
+    TParams = Record<string, unknown>,
+    TQueryParams = Record<string, unknown>,
   > {
-    body?: TBody;
-    headers?: THeaders;
-    params?: TParams;
-    queryParams?: TQueryParams;
+    body: TBody;
+    headers: THeaders;
+    params: TParams;
+    queryParams: TQueryParams;
   }
 
-  export interface HttpResponse<TBody extends Record<string, unknown> | unknown = unknown> {
+  export interface HttpResponse<TBody = Record<string, unknown>> {
     body?: TBody;
     statusCode: number;
   }
