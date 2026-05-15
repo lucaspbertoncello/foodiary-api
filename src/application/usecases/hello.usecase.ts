@@ -1,3 +1,6 @@
+import { Injectable } from "@kernel/decorators/injectable.decorator";
+
+@Injectable()
 export class HelloUseCase {
   public async execute({ email }: HelloUseCase.Input): Promise<HelloUseCase.Output> {
     if (!email) {
