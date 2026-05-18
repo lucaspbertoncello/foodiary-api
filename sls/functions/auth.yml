@@ -5,6 +5,13 @@ signup:
         path: /auth/signup
         method: POST
 
+signin:
+  handler: src/main/functions/auth/signin.handler
+  events:
+    - httpApi:
+        path: /auth/signin
+        method: POST
+
 preSignupTrigger:
   handler: src/main/functions/auth/_triggers/pre-signup.handler
   events:

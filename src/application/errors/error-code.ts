@@ -5,4 +5,5 @@ export enum ErrorCode {
   BAD_REQUEST = "BAD_REQUEST",
   // application
   EMAIL_ALREADY_IN_USE = "EMAIL_ALREADY_IN_USE",
+  USER_NOT_FOUND = "USER_NOT_FOUND",
 }
