@@ -1,3 +1,4 @@
+import { ApplicationError } from "@application/contracts/application-error.contract";
 import { Controller } from "@application/contracts/controller.contract";
 import { HttpError } from "@application/contracts/http-error.contract";
 import { ErrorCode } from "@application/errors/error-code";
@@ -35,6 +36,14 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
 
       if (error instanceof HttpError) {
         return lambdaErrorResponse(error);
+      }
+
+      if (error instanceof ApplicationError) {
+        return lambdaErrorResponse({
+          statusCode: error.statusCode ?? 400,
+          code: error.code,
+          message: error.message,
+        });
       }
 
       console.error(error);
