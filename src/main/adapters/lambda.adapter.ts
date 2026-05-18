@@ -12,7 +12,6 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
   return async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
     try {
       const container = Registry.getInstance();
-      container.register(controllerImpl);
       const controllerInstance = container.resolve(controllerImpl);
 
       const body = lambdaBodyParser(event.body);
