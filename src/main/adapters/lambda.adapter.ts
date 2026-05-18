@@ -26,11 +26,11 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
       const queryParams = event.queryStringParameters ?? {};
 
       const accountId =
-        "authorizer" in event.requestContext ? event.requestContext.authorizer.jwt.claims.internalId : null;
+        "authorizer" in event.requestContext
+          ? (event.requestContext.authorizer.jwt.claims.internalId as string)
+          : null;
 
-      console.log({ accountId });
-
-      const result = await controllerInstance.execute({ body, headers, params, queryParams });
+      const result = await controllerInstance.execute({ body, headers, params, queryParams, accountId });
 
       return {
         statusCode: result.statusCode,
@@ -69,6 +69,6 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
 }
 
 export namespace LambdaHttpAdapter {
-  export type ControllerImpl = Constructor<Controller>;
+  export type ControllerImpl = Constructor<any>;
   export type Event = APIGatewayProxyEventV2 | APIGatewayProxyEventV2WithJWTAuthorizer;
 }
