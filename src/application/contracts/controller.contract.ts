@@ -1,11 +1,9 @@
 import { getSchema } from "@kernel/decorators/schema.decorator";
 
-export abstract class Controller<TControllerResponse = undefined> {
-  protected abstract handle(
-    request: Controller.HttpRequest,
-  ): Promise<Controller.HttpResponse<TControllerResponse>>;
+export abstract class Controller {
+  protected abstract handle(request: Controller.HttpRequest): Promise<Controller.HttpResponse>;
 
-  public execute(request: Controller.HttpRequest): Promise<Controller.HttpResponse<TControllerResponse>> {
+  public execute(request: Controller.HttpRequest): Promise<Controller.HttpResponse> {
     const body = this.validateBody(request.body);
     return this.handle({ ...request, body });
   }
