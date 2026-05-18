@@ -1,5 +1,6 @@
 node_modules
 .serverless
 .env
+.vscode
 
 AGENTS.md
