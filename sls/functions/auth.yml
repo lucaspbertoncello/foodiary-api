@@ -6,7 +6,7 @@ signup:
         method: POST
 
 preSignupTrigger:
-  handler: src/main/functions/auth/pre-signup.handler
+  handler: src/main/functions/auth/_triggers/pre-signup.handler
   events:
     - cognitoUserPool:
         pool: ${self:custom.cognito.PoolName}
