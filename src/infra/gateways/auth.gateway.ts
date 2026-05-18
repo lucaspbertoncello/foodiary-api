@@ -8,12 +8,17 @@ import { createHmac } from "node:crypto";
 export class AuthGateway {
   constructor(private readonly appConfig: AppConfig) {}
 
-  public async signup({ email, password }: AuthGateway.SignupParams): Promise<AuthGateway.SignupResult> {
+  public async signup({
+    email,
+    password,
+    internalId,
+  }: AuthGateway.SignupParams): Promise<AuthGateway.SignupResult> {
     const command = new SignUpCommand({
       ClientId: this.appConfig.auth.cognito.clientId,
       Username: email,
       Password: password,
       SecretHash: this.getSecretHash({ email }),
+      UserAttributes: [{ Name: "custom:internalId", Value: internalId }],
     });
 
     const { UserSub: externalId } = await cognitoClient.send(command);
@@ -55,7 +60,7 @@ export class AuthGateway {
 }
 
 export namespace AuthGateway {
-  export type SignupParams = { email: string; password: string };
+  export type SignupParams = { email: string; password: string; internalId: string };
   export type SignupResult = { externalId: string };
 
   export type SigninParams = { email: string; password: string };

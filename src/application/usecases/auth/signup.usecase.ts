@@ -18,9 +18,10 @@ export class SignupUsecase {
       throw new EmailAlreadyExists({});
     }
 
-    const { externalId } = await this.authGateway.signup({ email, password });
+    const account = new Account({ email });
+    const { externalId } = await this.authGateway.signup({ email, password, internalId: account.id });
 
-    const account = new Account({ email, externalId });
+    account.externalId = externalId;
 
     // enviamos a entidade pura da aplicacao para o repositorio
     // ele que transforma a entidade num formato compativel com as interfaces do dynamo
