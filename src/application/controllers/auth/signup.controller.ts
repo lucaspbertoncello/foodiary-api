@@ -1,8 +1,10 @@
 import { Controller } from "@application/contracts/controller.contract";
 import { SignupUsecase } from "@application/usecases/auth/signup.usecase";
+import { Injectable } from "@kernel/decorators/injectable.decorator";
 import { Schema } from "@kernel/decorators/schema.decorator";
 import { SignupBody, signupSchema } from "./_schemas/signup.schema";
 
+@Injectable()
 @Schema(signupSchema)
 export class SignupController extends Controller<SignupController.Response> {
   constructor(private readonly signupUsecase: SignupUsecase) {
