@@ -4,6 +4,7 @@ import { env } from "@shared/config/env.config";
 @Injectable()
 export class AppConfig {
   public readonly auth: AppConfig.Auth;
+  public readonly database: AppConfig.Database;
 
   constructor() {
     this.auth = {
@@ -13,11 +14,19 @@ export class AppConfig {
         clientSecret: env.COGNITO_CLIENT_SECRET,
       },
     };
+
+    this.database = {
+      dynamoDb: { tableName: env.MAIN_TABLE_NAME },
+    };
   }
 }
 
 export namespace AppConfig {
   export type Auth = {
     cognito: { clientId: string; poolId: string; clientSecret: string };
+  };
+
+  export type Database = {
+    dynamoDb: { tableName: string };
   };
 }
