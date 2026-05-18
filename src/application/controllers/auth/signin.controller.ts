@@ -6,14 +6,16 @@ import { SigninBody, signinSchema } from "./_schemas/signin.schema";
 
 @Injectable()
 @Schema(signinSchema)
-export class SigninController extends Controller {
+export class SigninController extends Controller<"public"> {
   constructor(private readonly signinUsecase: SigninUseCase) {
     super();
   }
 
   protected override async handle({
     body,
-  }: Controller.HttpRequest<SigninBody>): Promise<Controller.HttpResponse<SigninController.Response>> {
+  }: Controller.HttpRequest<"public", SigninBody>): Promise<
+    Controller.HttpResponse<SigninController.Response>
+  > {
     const { email, password } = body.account;
     const { accessToken, refreshToken } = await this.signinUsecase.execute({ email, password });
 
