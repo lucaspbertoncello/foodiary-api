@@ -20,3 +20,6 @@ preSignupTrigger:
         trigger: PreSignUp
         existing: true
         forceDeploy: true
+
+preTokenGenerationTrigger:
+  handler: src/main/functions/auth/_triggers/pre-token-generation.handler

@@ -6,11 +6,17 @@ import { Registry } from "@kernel/di/registry";
 import { lambdaBodyParser } from "@main/utils/lambda-body-parser";
 import { lambdaErrorResponse } from "@main/utils/lambda-error-response";
 import { Constructor } from "@shared/@types/constructor.type";
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
+
+import {
+  APIGatewayProxyEventV2,
+  APIGatewayProxyEventV2WithJWTAuthorizer,
+  APIGatewayProxyResultV2,
+} from "aws-lambda";
+
 import { ZodError } from "zod";
 
 export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHttpAdapter.ControllerImpl }) {
-  return async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
+  return async (event: LambdaHttpAdapter.Event): Promise<APIGatewayProxyResultV2> => {
     try {
       const controllerInstance = Registry.getInstance().resolve(controllerImpl);
 
@@ -18,6 +24,11 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
       const headers = event.headers ?? {};
       const params = event.pathParameters ?? {};
       const queryParams = event.queryStringParameters ?? {};
+
+      const accountId =
+        "authorizer" in event.requestContext ? event.requestContext.authorizer.jwt.claims.internalId : null;
+
+      console.log({ accountId });
 
       const result = await controllerInstance.execute({ body, headers, params, queryParams });
 
@@ -58,5 +69,6 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
 }
 
 export namespace LambdaHttpAdapter {
-  export type ControllerImpl = Constructor<Controller<unknown>>;
+  export type ControllerImpl = Constructor<Controller>;
+  export type Event = APIGatewayProxyEventV2 | APIGatewayProxyEventV2WithJWTAuthorizer;
 }
