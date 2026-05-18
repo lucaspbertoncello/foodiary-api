@@ -12,6 +12,13 @@ signin:
         path: /auth/signin
         method: POST
 
+refreshToken:
+  handler: src/main/functions/auth/refresh-token.handler
+  events:
+    - httpApi:
+        path: /auth/refresh-token
+        method: POST
+
 preSignupTrigger:
   handler: src/main/functions/auth/_triggers/pre-signup.handler
   events:
