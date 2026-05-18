@@ -2,7 +2,7 @@ Resources:
   UserPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      UserPoolName: ${self:service}-${self:provider.stage}-UserPool
+      UserPoolName: ${self:custom.cognito.PoolName}
       DeletionProtection: ACTIVE
       MfaConfiguration: OFF
       AutoVerifiedAttributes:
@@ -25,7 +25,8 @@ Resources:
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     Properties:
-      ClientName: ${self:service}-${self:provider.stage}-UserPoolClient
+      ClientName: ${self:custom.cognito.ClientName}
+      GenerateSecret: true # so quem tem a secret pode executar comandos na pool client. pro caso do client id vazar
       UserPoolId:
         Ref: UserPool
       ExplicitAuthFlows:

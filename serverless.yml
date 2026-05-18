@@ -8,6 +8,7 @@ provider:
   architecture: arm64
   memorySize: 128
   stage: ${opt:stage, "dev"}
+  environment: ${file(./sls/config/env.yml)}
 
 package:
   individually: true
@@ -15,6 +16,11 @@ package:
 build:
   esbuild:
     configFile: ./esbuild.config.mjs
+
+custom:
+  cognito:
+    PoolName: ${self:service}-${self:provider.stage}-UserPool
+    ClientName: ${self:service}-${self:provider.stage}-UserPoolClient
 
 functions:
   - ${file(./sls/functions/auth.yml)}
