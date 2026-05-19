@@ -1,3 +1,4 @@
+import { InvalidCredentials } from "@application/errors/application/invalid-credentials.error";
 import { InvalidRefreshToken } from "@application/errors/application/invalid-refresh-token.error";
 import {
   ConfirmForgotPasswordCommand,
@@ -38,26 +39,30 @@ export class AuthGateway {
   }
 
   public async signin({ email, password }: AuthGateway.SigninParams): Promise<AuthGateway.SigninResult> {
-    const command = new InitiateAuthCommand({
-      ClientId: this.appConfig.auth.cognito.clientId,
-      AuthFlow: "USER_PASSWORD_AUTH",
-      AuthParameters: {
-        USERNAME: email,
-        PASSWORD: password,
-        SECRET_HASH: this.getSecretHash({ email }),
-      },
-    });
+    try {
+      const command = new InitiateAuthCommand({
+        ClientId: this.appConfig.auth.cognito.clientId,
+        AuthFlow: "USER_PASSWORD_AUTH",
+        AuthParameters: {
+          USERNAME: email,
+          PASSWORD: password,
+          SECRET_HASH: this.getSecretHash({ email }),
+        },
+      });
 
-    const { AuthenticationResult } = await cognitoClient.send(command);
+      const { AuthenticationResult } = await cognitoClient.send(command);
 
-    if (!AuthenticationResult?.AccessToken || !AuthenticationResult.RefreshToken) {
-      throw new Error(`Cannot authenticate user ${email}`);
+      if (!AuthenticationResult?.AccessToken || !AuthenticationResult.RefreshToken) {
+        throw new Error(`Cannot authenticate user ${email}`);
+      }
+
+      return {
+        accessToken: AuthenticationResult?.AccessToken,
+        refreshToken: AuthenticationResult?.RefreshToken,
+      };
+    } catch {
+      throw new InvalidCredentials({});
     }
-
-    return {
-      accessToken: AuthenticationResult?.AccessToken,
-      refreshToken: AuthenticationResult?.RefreshToken,
-    };
   }
 
   public async refreshToken({
