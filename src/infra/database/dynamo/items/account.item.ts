@@ -1,4 +1,4 @@
-import { Account } from "@application/entities/account";
+import { Account } from "@application/entities/account.entity";
 
 export class AccountItem {
   private readonly keys: AccountItem.Keys;

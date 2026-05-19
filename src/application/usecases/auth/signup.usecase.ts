@@ -1,4 +1,4 @@
-import { Account } from "@application/entities/account";
+import { Account } from "@application/entities/account.entity";
 import { EmailAlreadyExists } from "@application/errors/application/email-already-exists.error";
 import { AccountRepository } from "@infra/database/dynamo/repositories/account.repository";
 import { AuthGateway } from "@infra/gateways/auth.gateway";
