@@ -49,7 +49,6 @@ export namespace GoalItem {
 
   export type Attributes = {
     accountId: string;
-    id: string;
     calories: number;
     proteins: number;
     carbohydrates: number;
