@@ -3,8 +3,7 @@ import { Goal } from "@application/entities/goal.entity";
 import { Profile } from "@application/entities/profile.entity";
 import { EmailAlreadyExists } from "@application/errors/application/email-already-exists.error";
 import { AccountRepository } from "@infra/database/dynamo/repositories/account.repository";
-import { GoalRepository } from "@infra/database/dynamo/repositories/goal.repository";
-import { ProfileRepository } from "@infra/database/dynamo/repositories/profile.repository";
+import { SignupUnitOfWork } from "@infra/database/dynamo/uow/signup.uow";
 import { AuthGateway } from "@infra/gateways/auth.gateway";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
 
@@ -13,8 +12,7 @@ export class SignupUseCase {
   constructor(
     private readonly authGateway: AuthGateway,
     private readonly accountRepository: AccountRepository,
-    private readonly profileRepository: ProfileRepository,
-    private readonly goalRepository: GoalRepository,
+    private readonly signupUnitOfWork: SignupUnitOfWork,
   ) {}
 
   public async execute({
@@ -38,17 +36,9 @@ export class SignupUseCase {
     });
 
     const { externalId } = await this.authGateway.signup({ email, password, internalId: account.id });
-
     account.externalId = externalId;
 
-    // enviamos a entidade pura da aplicacao para o repositorio
-    // ele que transforma a entidade num formato compativel com as interfaces do dynamo
-    await Promise.all([
-      this.accountRepository.save(account),
-      this.profileRepository.save(profile),
-      this.goalRepository.save(goal),
-    ]);
-
+    await this.signupUnitOfWork.run({ account, goal, profile });
     const { accessToken, refreshToken } = await this.authGateway.signin({ email, password });
 
     return { accessToken, refreshToken };
