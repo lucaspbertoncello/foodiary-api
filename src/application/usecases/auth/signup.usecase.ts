@@ -5,7 +5,7 @@ import { AuthGateway } from "@infra/gateways/auth.gateway";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
 
 @Injectable()
-export class SignupUsecase {
+export class SignupUseCase {
   constructor(
     private readonly authGateway: AuthGateway,
     private readonly accountRepository: AccountRepository,

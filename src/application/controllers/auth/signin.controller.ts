@@ -7,7 +7,7 @@ import { SigninBody, signinSchema } from "./_schemas/signin.schema";
 @Injectable()
 @Schema(signinSchema)
 export class SigninController extends Controller<"public"> {
-  constructor(private readonly signinUsecase: SigninUseCase) {
+  constructor(private readonly signinUseCase: SigninUseCase) {
     super();
   }
 
@@ -17,7 +17,7 @@ export class SigninController extends Controller<"public"> {
     Controller.HttpResponse<SigninController.Response>
   > {
     const { email, password } = body.account;
-    const { accessToken, refreshToken } = await this.signinUsecase.execute({ email, password });
+    const { accessToken, refreshToken } = await this.signinUseCase.execute({ email, password });
 
     return { statusCode: 200, body: { accessToken, refreshToken } };
   }

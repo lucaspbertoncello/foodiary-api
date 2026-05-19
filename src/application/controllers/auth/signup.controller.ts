@@ -1,5 +1,5 @@
 import { Controller } from "@application/contracts/controller.contract";
-import { SignupUsecase } from "@application/usecases/auth/signup.usecase";
+import { SignupUseCase } from "@application/usecases/auth/signup.usecase";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
 import { Schema } from "@kernel/decorators/schema.decorator";
 import { SignupBody, signupSchema } from "./_schemas/signup.schema";
@@ -7,7 +7,7 @@ import { SignupBody, signupSchema } from "./_schemas/signup.schema";
 @Injectable()
 @Schema(signupSchema)
 export class SignupController extends Controller<"public"> {
-  constructor(private readonly signupUsecase: SignupUsecase) {
+  constructor(private readonly signupUseCase: SignupUseCase) {
     super();
   }
 
@@ -17,7 +17,7 @@ export class SignupController extends Controller<"public"> {
     Controller.HttpResponse<SignupController.Response>
   > {
     const { email, password } = body.account;
-    const { accessToken, refreshToken } = await this.signupUsecase.execute({ email, password });
+    const { accessToken, refreshToken } = await this.signupUseCase.execute({ email, password });
 
     return {
       statusCode: 200,

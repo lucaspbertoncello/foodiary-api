@@ -1,9 +1,8 @@
 import { Controller } from "@application/contracts/controller.contract";
-import { SignupUsecase } from "@application/usecases/auth/signup.usecase";
+import { RefreshTokenUseCase } from "@application/usecases/auth/refresh-token.usecase";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
 import { Schema } from "@kernel/decorators/schema.decorator";
 import { RefreshTokenBody, refreshTokenSchema } from "./_schemas/refresh-token.schema";
-import { RefreshTokenUseCase } from "@application/usecases/auth/refresh-token.usecase";
 
 @Injectable()
 @Schema(refreshTokenSchema)
