@@ -13,7 +13,7 @@ export class ProfileItem {
     };
   }
 
-  public static fromEntity(profile: Profile) {
+  public static getInstanceFromEntity(profile: Profile) {
     return new ProfileItem({
       ...profile,
       createdAt: profile.createdAt.toISOString(),
@@ -21,7 +21,7 @@ export class ProfileItem {
     });
   }
 
-  public toItem(): ProfileItem.ItemType {
+  public toItem(): ProfileItem.ItemReturnType {
     return {
       ...this.keys,
       ...this.attr,
@@ -29,7 +29,7 @@ export class ProfileItem {
     };
   }
 
-  public toEntity(attr: ProfileItem.Attributes): Profile {
+  public toDomain(attr: ProfileItem.Attributes): Profile {
     return new Profile({
       ...attr,
       birthDate: new Date(attr.birthDate),
@@ -65,5 +65,5 @@ export namespace ProfileItem {
     SK: `ACCOUNT#${string}#PROFILE`;
   };
 
-  export type ItemType = Attributes & Keys & { type: EntityType };
+  export type ItemReturnType = Attributes & Keys & { type: EntityType };
 }

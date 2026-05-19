@@ -10,7 +10,7 @@ export class ProfileRepository {
   constructor(private readonly appConfig: AppConfig) {}
 
   public async save(profile: Profile): Promise<void> {
-    const profileItem = ProfileItem.fromEntity(profile);
+    const profileItem = ProfileItem.getInstanceFromEntity(profile);
 
     const command = new PutCommand({
       TableName: this.appConfig.database.dynamoDb.tableName,

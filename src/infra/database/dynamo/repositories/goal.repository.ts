@@ -10,7 +10,7 @@ export class GoalRepository {
   constructor(private readonly appConfig: AppConfig) {}
 
   public async save(goal: Goal): Promise<void> {
-    const goalItem = GoalItem.fromEntity(goal);
+    const goalItem = GoalItem.getInstanceFromEntity(goal);
 
     const command = new PutCommand({
       TableName: this.appConfig.database.dynamoDb.tableName,

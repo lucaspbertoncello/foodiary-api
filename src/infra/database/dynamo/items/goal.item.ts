@@ -13,14 +13,14 @@ export class GoalItem {
     };
   }
 
-  public static fromEntity(goal: Goal) {
+  public static getInstanceFromEntity(goal: Goal) {
     return new GoalItem({
       ...goal,
       createdAt: goal.createdAt.toISOString(),
     });
   }
 
-  public toItem(): GoalItem.ItemType {
+  public toItem(): GoalItem.ItemReturnType {
     return {
       ...this.keys,
       ...this.attr,
@@ -28,7 +28,7 @@ export class GoalItem {
     };
   }
 
-  public toEntity(attr: GoalItem.Attributes): Goal {
+  public toDomain(attr: GoalItem.Attributes): Goal {
     return new Goal({
       ...attr,
       createdAt: new Date(attr.createdAt),
@@ -62,5 +62,5 @@ export namespace GoalItem {
     SK: `ACCOUNT#${string}#GOAL`;
   };
 
-  export type ItemType = Attributes & Keys & { type: EntityType };
+  export type ItemReturnType = Attributes & Keys & { type: EntityType };
 }

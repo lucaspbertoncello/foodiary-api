@@ -32,12 +32,12 @@ export class AccountRepository {
       return null;
     }
 
-    return AccountItem.toEntity(account as AccountItem.ItemType);
+    return AccountItem.toDomain(account as AccountItem.ItemReturnType);
   }
 
   public async save(account: Account): Promise<void> {
     // transformamos a entidade de dominio em uma entidade para o banco
-    const accountItem = AccountItem.fromEntity(account);
+    const accountItem = AccountItem.getInstanceFromEntity(account);
 
     const command = new PutCommand({
       TableName: this.appConfig.database.dynamoDb.tableName,

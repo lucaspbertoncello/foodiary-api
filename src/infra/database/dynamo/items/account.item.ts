@@ -13,7 +13,7 @@ export class AccountItem {
     };
   }
 
-  public static fromEntity(account: Account) {
+  public static getInstanceFromEntity(account: Account) {
     return new AccountItem({
       ...account,
       createdAt: account.createdAt.toISOString(),
@@ -21,7 +21,7 @@ export class AccountItem {
   }
 
   // metodo que retorna a receita correta para insercao no dynamo
-  public toItem(): AccountItem.ItemType {
+  public toItem(): AccountItem.ItemReturnType {
     return {
       ...this.keys,
       ...this.attr,
@@ -29,8 +29,8 @@ export class AccountItem {
     };
   }
 
-  // metodo que recebe a account no formato de ItemType, e transforma numa account de dominio
-  public static toEntity(accountItem: AccountItem.ItemType): Account {
+  // metodo que recebe a account no formato de ItemReturnType, e transforma numa account de dominio
+  public static toDomain(accountItem: AccountItem.ItemReturnType): Account {
     return new Account({
       id: accountItem.id,
       createdAt: new Date(accountItem.createdAt),
@@ -77,5 +77,5 @@ export namespace AccountItem {
     GSI1SK: `ACCOUNT#${string}`;
   };
 
-  export type ItemType = Keys & Attributes & { type: EntityType };
+  export type ItemReturnType = Keys & Attributes & { type: EntityType };
 }
