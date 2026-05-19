@@ -78,7 +78,7 @@ export class AuthGateway {
       const { AuthenticationResult } = await cognitoClient.send(command);
 
       if (!AuthenticationResult?.AccessToken || !AuthenticationResult.RefreshToken) {
-        throw new Error(`Cannot refresh token.`);
+        throw new Error("Cannot refresh token.");
       }
 
       return {
