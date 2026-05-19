@@ -26,6 +26,13 @@ forgotPassword:
         path: /auth/forgot-password
         method: POST
 
+resetPassword:
+  handler: src/main/functions/auth/reset-password.handler
+  events:
+    - httpApi:
+        path: /auth/reset-password
+        method: POST
+
 preSignupTrigger:
   handler: src/main/functions/auth/_triggers/pre-signup.handler
   events:
