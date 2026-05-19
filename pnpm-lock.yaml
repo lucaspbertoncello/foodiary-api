@@ -17,6 +17,9 @@ importers:
       '@aws-sdk/lib-dynamodb':
         specifier: ^3.1048.0
         version: 3.1048.0(@aws-sdk/client-dynamodb@3.1048.0)
+      '@smithy/smithy-client':
+        specifier: ^4.13.3
+        version: 4.13.3
       ksuid:
         specifier: ^3.0.0
         version: 3.0.0
@@ -254,6 +257,10 @@ packages:
 
   '@smithy/signature-v4@5.4.3':
     resolution: {integrity: sha512-53+75QuPl6DL+ct6vVEB51FDO5oulXr20TPV46VvJZg76lIlXNWfxi8j+G2V/t0I2qxCBOa3vX/8bmjrpFVo9g==}
+    engines: {node: '>=18.0.0'}
+
+  '@smithy/smithy-client@4.13.3':
+    resolution: {integrity: sha512-Z8mQ+YryjP5krDadV6unnp5035L4S1brafXpTiRmjPweKSaQ6X9CYDYWvmEggXjDIa1oufX/2a/bdwu8EIz/lw==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/types@4.14.2':
@@ -985,6 +992,12 @@ snapshots:
       tslib: 2.8.1
 
   '@smithy/signature-v4@5.4.3':
+    dependencies:
+      '@smithy/core': 3.24.3
+      '@smithy/types': 4.14.2
+      tslib: 2.8.1
+
+  '@smithy/smithy-client@4.13.3':
     dependencies:
       '@smithy/core': 3.24.3
       '@smithy/types': 4.14.2

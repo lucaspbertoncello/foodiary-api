@@ -1,11 +1,11 @@
 import { ApplicationError } from "@application/contracts/application-error.contract";
-import { Controller } from "@application/contracts/controller.contract";
 import { HttpError } from "@application/contracts/http-error.contract";
 import { ErrorCode } from "@application/errors/error-code";
 import { Registry } from "@kernel/di/registry";
 import { lambdaBodyParser } from "@main/utils/lambda-body-parser";
 import { lambdaErrorResponse } from "@main/utils/lambda-error-response";
 import { Constructor } from "@shared/@types/constructor.type";
+import { ServiceException } from "@smithy/smithy-client";
 
 import {
   APIGatewayProxyEventV2,
@@ -54,6 +54,14 @@ export function lambdaHttpAdapter({ controllerImpl }: { controllerImpl: LambdaHt
           statusCode: error.statusCode ?? 400,
           code: error.code,
           message: error.message,
+        });
+      }
+
+      if (error instanceof ServiceException) {
+        return lambdaErrorResponse({
+          code: ErrorCode.BAD_REQUEST,
+          message: error.message,
+          statusCode: error.$metadata.httpStatusCode ?? 400,
         });
       }
 
