@@ -6,7 +6,7 @@ import { SignupBody, signupSchema } from "./_schemas/signup.schema";
 
 @Injectable()
 @Schema(signupSchema)
-export class SignupController extends Controller<"public"> {
+export class SignupController extends Controller<"public", SignupController.Response> {
   constructor(private readonly signupUseCase: SignupUseCase) {
     super();
   }

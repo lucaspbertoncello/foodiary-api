@@ -6,7 +6,7 @@ import { SigninBody, signinSchema } from "./_schemas/signin.schema";
 
 @Injectable()
 @Schema(signinSchema)
-export class SigninController extends Controller<"public"> {
+export class SigninController extends Controller<"public", SigninController.Response> {
   constructor(private readonly signinUseCase: SigninUseCase) {
     super();
   }
