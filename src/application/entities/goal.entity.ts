@@ -1,6 +1,5 @@
 export class Goal implements Goal.Attributes {
   public readonly accountId: string;
-  public readonly id: string;
   public readonly calories: number;
   public readonly proteins: number;
   public readonly carbohydrates: number;
@@ -10,7 +9,6 @@ export class Goal implements Goal.Attributes {
   constructor(attr: Goal.Attributes) {
     this.accountId = attr.accountId;
     this.accountId = attr.accountId;
-    this.id = attr.id;
     this.calories = attr.calories;
     this.proteins = attr.proteins;
     this.carbohydrates = attr.proteins;
@@ -22,7 +20,6 @@ export class Goal implements Goal.Attributes {
 export namespace Goal {
   export type Attributes = {
     accountId: string;
-    id: string;
     calories: number;
     proteins: number;
     carbohydrates: number;
