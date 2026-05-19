@@ -1,9 +1,13 @@
 import { getSchema } from "@kernel/decorators/schema.decorator";
 
-export abstract class Controller<TRouteType extends Controller.RouteType> {
-  protected abstract handle(request: Controller.HttpRequest<TRouteType>): Promise<Controller.HttpResponse>;
+export abstract class Controller<TRouteType extends Controller.RouteType, TControlerReponse> {
+  protected abstract handle(
+    request: Controller.HttpRequest<TRouteType>,
+  ): Promise<Controller.HttpResponse<TControlerReponse>>;
 
-  public execute(request: Controller.HttpRequest<TRouteType>): Promise<Controller.HttpResponse> {
+  public execute(
+    request: Controller.HttpRequest<TRouteType>,
+  ): Promise<Controller.HttpResponse<TControlerReponse>> {
     const body = this.validateBody(request.body);
     return this.handle({ ...request, body });
   }
@@ -58,7 +62,7 @@ export namespace Controller {
     ? PublicRequest<TBody, THeaders, TParams, TQueryParams>
     : PrivateRequest<TBody, THeaders, TParams, TQueryParams>;
 
-  export interface HttpResponse<TBody = Record<string, unknown>> {
+  export interface HttpResponse<TBody> {
     body?: TBody;
     statusCode: number;
   }

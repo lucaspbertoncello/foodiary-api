@@ -34,7 +34,6 @@ custom:
 
 functions:
   - ${file(./sls/functions/auth.yml)}
-  - ${file(./sls/functions/meals.yml)}
 
 resources:
   - ${file(./sls/resources/UserPool.yml)}
