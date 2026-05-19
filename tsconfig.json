@@ -24,7 +24,7 @@
       "@kernel/*": ["src/kernel/*"],
       "@main/*": ["src/main/*"],
       "@infra/*": ["src/infra/*"],
-      "@shared/*": ["src/shared/*"],
-    },
-  },
+      "@shared/*": ["src/shared/*"]
+    }
+  }
 }

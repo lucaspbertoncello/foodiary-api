@@ -44,3 +44,12 @@ preSignupTrigger:
 
 preTokenGenerationTrigger:
   handler: src/main/functions/auth/_triggers/pre-token-generation.handler
+
+customMessageTrigger:
+  handler: src/main/functions/auth/_triggers/custom-message.handler
+  events:
+    - cognitoUserPool:
+        pool: ${self:custom.cognito.PoolName}
+        trigger: CustomMessage
+        existing: true
+        forceDeploy: true
