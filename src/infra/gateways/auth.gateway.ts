@@ -1,6 +1,7 @@
 import { InvalidCredentials } from "@application/errors/application/invalid-credentials.error";
 import { InvalidRefreshToken } from "@application/errors/application/invalid-refresh-token.error";
 import {
+  AdminDeleteUserCommand,
   ConfirmForgotPasswordCommand,
   ForgotPasswordCommand,
   GetTokensFromRefreshTokenCommand,
@@ -118,6 +119,17 @@ export class AuthGateway {
     await cognitoClient.send(command);
   }
 
+  public async deleteUser({
+    externalId,
+  }: AuthGateway.DeleteUserParams): Promise<AuthGateway.DeleteUserResult> {
+    const command = new AdminDeleteUserCommand({
+      UserPoolId: this.appConfig.auth.cognito.poolId,
+      Username: externalId,
+    });
+
+    await cognitoClient.send(command);
+  }
+
   private getSecretHash({ email }: { email: string }): string {
     const { clientId, clientSecret } = this.appConfig.auth.cognito;
     return createHmac("SHA256", clientSecret).update(`${email}${clientId}`).digest("base64");
@@ -139,4 +151,7 @@ export namespace AuthGateway {
 
   export type ResetPasswordParams = { email: string; code: string; newPassword: string };
   export type ResetPasswordResult = void;
+
+  export type DeleteUserParams = { externalId: string };
+  export type DeleteUserResult = void;
 }
