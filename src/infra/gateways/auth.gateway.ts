@@ -1,3 +1,4 @@
+import { InvalidRefreshToken } from "@application/errors/application/invalid-refresh-token.error";
 import {
   GetTokensFromRefreshTokenCommand,
   InitiateAuthCommand,
@@ -60,22 +61,26 @@ export class AuthGateway {
   public async refreshToken({
     refreshToken,
   }: AuthGateway.RefreshTokenParams): Promise<AuthGateway.RefreshTokenResult> {
-    const command = new GetTokensFromRefreshTokenCommand({
-      ClientId: this.appConfig.auth.cognito.clientId,
-      RefreshToken: refreshToken,
-      ClientSecret: this.appConfig.auth.cognito.clientSecret,
-    });
+    try {
+      const command = new GetTokensFromRefreshTokenCommand({
+        ClientId: this.appConfig.auth.cognito.clientId,
+        RefreshToken: refreshToken,
+        ClientSecret: this.appConfig.auth.cognito.clientSecret,
+      });
 
-    const { AuthenticationResult } = await cognitoClient.send(command);
+      const { AuthenticationResult } = await cognitoClient.send(command);
 
-    if (!AuthenticationResult?.AccessToken || !AuthenticationResult.RefreshToken) {
-      throw new Error(`Cannot refresh token.`);
+      if (!AuthenticationResult?.AccessToken || !AuthenticationResult.RefreshToken) {
+        throw new Error(`Cannot refresh token.`);
+      }
+
+      return {
+        accessToken: AuthenticationResult.AccessToken,
+        refreshToken: AuthenticationResult.RefreshToken,
+      };
+    } catch {
+      throw new InvalidRefreshToken({});
     }
-
-    return {
-      accessToken: AuthenticationResult.AccessToken,
-      refreshToken: AuthenticationResult.RefreshToken,
-    };
   }
 
   private getSecretHash({ email }: { email: string }): string {
