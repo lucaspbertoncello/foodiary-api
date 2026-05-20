@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "deploy": "tsc --noEmit && serverless deploy",
+    "typecheck": "tsc --noEmit",
     "email:dev": "email dev --dir ./src/shared/emails"
   },
   "keywords": [],
