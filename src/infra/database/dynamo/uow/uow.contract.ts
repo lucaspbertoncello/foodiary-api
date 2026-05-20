@@ -16,6 +16,8 @@ export abstract class UnitOfWork<TRunParams extends Record<string, unknown>> {
     });
 
     await dynamoClient.send(command);
+
+    this.transactItens = [];
   }
 }
 
