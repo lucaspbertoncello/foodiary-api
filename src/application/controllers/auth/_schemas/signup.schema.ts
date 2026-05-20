@@ -19,6 +19,7 @@ export const signupSchema = z.object({
       gender: z.enum(Profile.Gender, "$profile.gender must be a valid gender"),
       height: z.number("$profile.height must be a number"),
       weight: z.number("$profile.weight must be a number"),
+      goal: z.enum(Profile.Goal, "$profile.goal must be a valid goal"),
       activityLevel: z.enum(Profile.ActivityLevel, "$profile.activityLevel must be a valid activity level"),
     },
     "$profile is required",

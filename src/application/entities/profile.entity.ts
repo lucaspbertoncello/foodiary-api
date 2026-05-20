@@ -5,6 +5,7 @@ export class Profile {
   public readonly gender: Profile.Gender;
   public readonly height: number;
   public readonly weight: number;
+  public readonly goal: Profile.Goal;
   public readonly activityLevel: Profile.ActivityLevel;
   public readonly createdAt: Date;
 
@@ -16,6 +17,7 @@ export class Profile {
     this.height = attr.height;
     this.weight = attr.weight;
     this.activityLevel = attr.activityLevel;
+    this.goal = attr.goal;
     this.createdAt = attr.createdAt ?? new Date();
   }
 }
@@ -29,12 +31,19 @@ export namespace Profile {
     gender: Gender;
     height: number;
     weight: number;
+    goal: Profile.Goal;
     createdAt?: Date;
   };
 
   export enum Gender {
     MALE = "MALE",
     FEMALE = "FEMALE",
+  }
+
+  export enum Goal {
+    GAIN = "GAIN",
+    LOSE = "LOSE",
+    MAINTAIN = "MAINTAIN",
   }
 
   export enum ActivityLevel {

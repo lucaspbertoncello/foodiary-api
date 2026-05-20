@@ -62,6 +62,7 @@ export namespace SignupUseCase {
       gender: Profile.Gender;
       height: number;
       weight: number;
+      goal: Profile.Goal;
     };
   };
 
