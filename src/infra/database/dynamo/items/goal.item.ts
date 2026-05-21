@@ -2,7 +2,7 @@ import { Goal } from "@application/entities/goal.entity";
 
 export class GoalItem {
   private readonly keys: GoalItem.Keys;
-  private readonly type: GoalItem.EntityType = "Goal";
+  public static readonly type: GoalItem.EntityType = "Goal";
 
   constructor(private readonly attr: GoalItem.Attributes) {
     const { accountId } = attr;
@@ -24,7 +24,7 @@ export class GoalItem {
     return {
       ...this.keys,
       ...this.attr,
-      type: this.type,
+      type: GoalItem.type,
     };
   }
 

@@ -2,7 +2,7 @@ import { Account } from "@application/entities/account.entity";
 
 export class AccountItem {
   private readonly keys: AccountItem.Keys;
-  private readonly type: AccountItem.EntityType = "Account";
+  public static readonly type: AccountItem.EntityType = "Account";
 
   constructor(private readonly attr: AccountItem.Attributes) {
     this.keys = {
@@ -25,7 +25,7 @@ export class AccountItem {
     return {
       ...this.keys,
       ...this.attr,
-      type: this.type,
+      type: AccountItem.type,
     };
   }
 

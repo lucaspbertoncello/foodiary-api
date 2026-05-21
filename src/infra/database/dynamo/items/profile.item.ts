@@ -2,7 +2,7 @@ import { Profile } from "@application/entities/profile.entity";
 
 export class ProfileItem {
   private readonly keys: ProfileItem.Keys;
-  private readonly type: ProfileItem.EntityType = "Profile";
+  public static readonly type: ProfileItem.EntityType = "Profile";
 
   constructor(private readonly attr: ProfileItem.Attributes) {
     const { accountId } = attr;
@@ -25,7 +25,7 @@ export class ProfileItem {
     return {
       ...this.keys,
       ...this.attr,
-      type: this.type,
+      type: ProfileItem.type,
     };
   }
 
