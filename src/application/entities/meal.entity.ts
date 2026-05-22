@@ -9,7 +9,7 @@ export class Meal {
   public readonly attempts: number;
   public readonly name: string;
   public readonly icons: string;
-  public readonly foods: any;
+  public readonly foods: Meal.Food[];
   public readonly createdAt: Date;
 
   constructor(attr: Meal.Attributes) {
@@ -18,11 +18,11 @@ export class Meal {
     this.accountId = attr.accountId;
     this.status = attr.status;
     this.inputType = attr.inputType;
-    this.attempts = attr.attempts;
+    this.attempts = attr.attempts ?? 0;
     this.inputFileKey = attr.inputFileKey;
-    this.name = attr.name;
-    this.icons = attr.icons;
-    this.foods = attr.foods;
+    this.name = attr.name ?? "";
+    this.icons = attr.icons ?? "";
+    this.foods = attr.foods ?? [];
 
     this.createdAt = attr.createdAt ?? new Date();
   }
@@ -30,15 +30,15 @@ export class Meal {
 
 export namespace Meal {
   export type Attributes = {
-    id: string;
+    id?: string;
     accountId: string;
     status: Meal.Status;
     inputType: Meal.InputType;
     inputFileKey: string;
-    name: string;
-    attempts: number;
-    icons: string;
-    foods: Meal.Food[];
+    name?: string;
+    attempts?: number;
+    icons?: string;
+    foods?: Meal.Food[];
     createdAt?: Date;
   };
 
