@@ -21,7 +21,7 @@ export class CreateMealController extends Controller<"private", CreateMealContro
     const { mealId, uploadSignature } = await this.createMealUseCase.execute({ accountId, file });
 
     return {
-      statusCode: 204,
+      statusCode: 200,
       body: { mealId, uploadSignature },
     };
   }
