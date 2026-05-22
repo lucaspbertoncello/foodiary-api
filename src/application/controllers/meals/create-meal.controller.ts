@@ -18,14 +18,15 @@ export class CreateMealController extends Controller<"private", CreateMealContro
     Controller.HttpResponse<CreateMealController.Response>
   > {
     const { file } = body;
-    await this.createMealUseCase.execute({ accountId, file });
+    const { mealId, uploadSignature } = await this.createMealUseCase.execute({ accountId, file });
 
     return {
       statusCode: 204,
+      body: { mealId, uploadSignature },
     };
   }
 }
 
 export namespace CreateMealController {
-  export type Response = void;
+  export type Response = { mealId: string; uploadSignature: string };
 }
