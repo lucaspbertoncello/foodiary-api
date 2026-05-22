@@ -32,6 +32,7 @@ export class MealsStorageGateway {
       Bucket: bucket,
       Key: fileKey,
       Expires: FIVE_MIN_IN_SECS,
+      Fields: { "Content-type": extension },
       Conditions: [
         { bucket },
         ["eq", "$key", fileKey],
