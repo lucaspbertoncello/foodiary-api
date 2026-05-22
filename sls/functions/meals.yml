@@ -1,0 +1,8 @@
+createMeal:
+  handler: src/main/functions/meals/create-meal.handler
+  events:
+    - httpApi:
+        path: /meals
+        method: POST
+        authorizer:
+          name: CognitoAuthorizer
