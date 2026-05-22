@@ -25,9 +25,8 @@ export class CreateMealUseCase {
       this.mealsRepository.save(meal),
 
       this.mealsStorageGateway.createPresignedPost({
-        fileKey: inputFileKey,
-        fileSize: file.size,
-        inputType,
+        file: { fileKey: inputFileKey, fileSize: file.size, inputType },
+        mealId: meal.id,
       }),
     ]);
 
