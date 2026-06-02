@@ -15,23 +15,40 @@ export abstract class Controller<
   public execute(
     request: Controller.HttpRequest<TRouteType, TBody, THeaders, TParams, TQueryParams>,
   ): Promise<Controller.HttpResponse<TControlerReponse>> {
-    const body = this.validateBody(request.body);
-    return this.handle({ ...request, body });
+    const validatedRequest = this.validateRequest(request);
+
+    return this.handle(validatedRequest);
   }
 
-  private validateBody(body: TBody): TBody {
-    const schema = getSchema(this);
+  private validateRequest(
+    request: Controller.HttpRequest<TRouteType, TBody, THeaders, TParams, TQueryParams>,
+  ): Controller.HttpRequest<TRouteType, TBody, THeaders, TParams, TQueryParams> {
+    const REQUEST_SCHEMA_KEYS = ["body", "headers", "params", "queryParams"] as const;
+    const schemas = getSchema(this);
 
-    if (!schema) {
-      return body;
+    if (!schemas) {
+      return request;
     }
 
-    return schema.parse(body) as TBody;
+    return REQUEST_SCHEMA_KEYS.reduce<
+      Controller.HttpRequest<TRouteType, TBody, THeaders, TParams, TQueryParams>
+    >((validatedRequest, key) => {
+      const schema = schemas[key];
+
+      if (!schema) {
+        return validatedRequest;
+      }
+
+      return {
+        ...validatedRequest,
+        [key]: schema.parse(validatedRequest[key]),
+      };
+    }, request);
   }
 }
 
 export namespace Controller {
-  type BaseRequest<
+  export type BaseRequest<
     TBody = Record<string, unknown>,
     THeaders = Record<string, unknown>,
     TParams = Record<string, unknown>,

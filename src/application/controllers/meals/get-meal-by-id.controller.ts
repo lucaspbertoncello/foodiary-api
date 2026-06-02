@@ -2,9 +2,11 @@ import { Controller } from "@application/contracts/controller.contract";
 import { Meal } from "@application/entities/meal.entity";
 import { GetMealByIdUseCase } from "@application/usecases/meals/get-meal-by-id.usecase";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
+import { Schema } from "@kernel/decorators/schema.decorator";
 import { GetMealByIdParams, getMealByIdSchema } from "./_schemas/get-meal-by-id.schema";
 
 @Injectable()
+@Schema({ params: getMealByIdSchema })
 export class GetMealById extends Controller<
   "private",
   GetMealById.Response,
@@ -27,8 +29,7 @@ export class GetMealById extends Controller<
     GetMealById.Params,
     GetMealById.QueryParams
   >): Promise<Controller.HttpResponse<GetMealById.Response>> {
-    const { mealId } = getMealByIdSchema.parse(params);
-    const { meal } = await this.getMealByIdUseCase.execute({ accountId, mealId });
+    const { meal } = await this.getMealByIdUseCase.execute({ accountId, mealId: params.mealId });
     return { statusCode: 200, body: { meal: { ...meal, createdAt: meal.createdAt.toISOString() } } };
   }
 }

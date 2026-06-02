@@ -5,7 +5,7 @@ import { Schema } from "@kernel/decorators/schema.decorator";
 import { CreateMealBody, createMealSchema } from "./_schemas/create-meal.schema";
 
 @Injectable()
-@Schema(createMealSchema)
+@Schema({ body: createMealSchema })
 export class CreateMealController extends Controller<
   "private",
   CreateMealController.Response,

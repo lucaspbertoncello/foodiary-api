@@ -5,7 +5,7 @@ import { Schema } from "@kernel/decorators/schema.decorator";
 import { ResetPasswordBody, resetPasswordSchema } from "./_schemas/reset-password.schema";
 
 @Injectable()
-@Schema(resetPasswordSchema)
+@Schema({ body: resetPasswordSchema })
 export class ResetPasswordController extends Controller<
   "public",
   ResetPasswordController.Response,

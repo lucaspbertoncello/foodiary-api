@@ -5,7 +5,7 @@ import { Schema } from "@kernel/decorators/schema.decorator";
 import { RefreshTokenBody, refreshTokenSchema } from "./_schemas/refresh-token.schema";
 
 @Injectable()
-@Schema(refreshTokenSchema)
+@Schema({ body: refreshTokenSchema })
 export class RefreshTokenController extends Controller<
   "public",
   RefreshTokenController.Response,

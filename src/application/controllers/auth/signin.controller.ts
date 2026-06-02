@@ -5,7 +5,7 @@ import { Schema } from "@kernel/decorators/schema.decorator";
 import { SigninBody, signinSchema } from "./_schemas/signin.schema";
 
 @Injectable()
-@Schema(signinSchema)
+@Schema({ body: signinSchema })
 export class SigninController extends Controller<
   "public",
   SigninController.Response,

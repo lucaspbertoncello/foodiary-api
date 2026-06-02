@@ -2,12 +2,14 @@ import { Controller } from "@application/contracts/controller.contract";
 import { Meal } from "@application/entities/meal.entity";
 import { ListMealsByDateQuery } from "@application/queries/list-meals-by-date.query";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
+import { Schema } from "@kernel/decorators/schema.decorator";
 import {
   ListMealsByDateQueryParams,
   listMealsByDateSchema,
 } from "./_schemas/list-meals-by-date.schema";
 
 @Injectable()
+@Schema({ queryParams: listMealsByDateSchema })
 export class ListMealsByDateController extends Controller<
   "private",
   ListMealsByDateController.Response,
@@ -32,8 +34,7 @@ export class ListMealsByDateController extends Controller<
   >): Promise<
     Controller.HttpResponse<ListMealsByDateController.Response>
   > {
-    const { date } = listMealsByDateSchema.parse(queryParams);
-    const { meals } = await this.listMealsByDateQuery.execute({ accountId, date });
+    const { meals } = await this.listMealsByDateQuery.execute({ accountId, date: queryParams.date });
 
     return {
       statusCode: 200,
