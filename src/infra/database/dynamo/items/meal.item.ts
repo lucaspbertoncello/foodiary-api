@@ -8,8 +8,8 @@ export class MealItem {
     const { id: mealId, createdAt, accountId } = attr;
 
     this.keys = {
-      PK: MealItem.getPk({ mealId }),
-      SK: MealItem.getSk({ mealId }),
+      PK: MealItem.getPk({ mealId, accountId }),
+      SK: MealItem.getSk({ mealId, accountId }),
       GSI1PK: MealItem.getGSI1PK({ accountId, createdAt: new Date(createdAt) }),
       GSI1SK: MealItem.getGSI1SK({ mealId }),
     };
@@ -38,7 +38,7 @@ export class MealItem {
     };
   }
 
-  public toDomain(attr: MealItem.Attributes): Meal {
+  public static toDomain(attr: MealItem.Attributes): Meal {
     return new Meal({
       ...attr,
       createdAt: new Date(attr.createdAt),
@@ -46,21 +46,15 @@ export class MealItem {
     });
   }
 
-  static getPk({ mealId }: { mealId: string }): MealItem.Keys["PK"] {
-    return `MEAL#${mealId}`;
+  static getPk({ mealId, accountId }: MealItem.PKParams): MealItem.Keys["PK"] {
+    return `ACCOUNT#${accountId}MEAL#${mealId}`;
   }
 
-  static getSk({ mealId }: { mealId: string }): MealItem.Keys["SK"] {
-    return `MEAL#${mealId}`;
+  static getSk({ mealId, accountId }: MealItem.SKParams): MealItem.Keys["SK"] {
+    return `ACCOUNT#${accountId}MEAL#${mealId}`;
   }
 
-  static getGSI1PK({
-    accountId,
-    createdAt,
-  }: {
-    accountId: string;
-    createdAt: Date;
-  }): MealItem.Keys["GSI1PK"] {
+  static getGSI1PK({ accountId, createdAt }: MealItem.GSI1PKParams): MealItem.Keys["GSI1PK"] {
     const year = createdAt.getFullYear();
     const month = String(createdAt.getMonth() + 1).padStart(2, "0");
     const day = String(createdAt.getDate()).padStart(2, "0");
@@ -68,7 +62,7 @@ export class MealItem {
     return `MEALS#${accountId}#${year}-${month}-${day}`;
   }
 
-  static getGSI1SK({ mealId }: { mealId: string }): MealItem.Keys["GSI1SK"] {
+  static getGSI1SK({ mealId }: MealItem.GSI1SKParams): MealItem.Keys["GSI1SK"] {
     return `MEAL#${mealId}`;
   }
 }
@@ -90,11 +84,17 @@ export namespace MealItem {
   };
 
   export type Keys = {
-    PK: `MEAL#${string}`;
-    SK: `MEAL#${string}`;
+    PK: `ACCOUNT#${string}MEAL#${string}`;
+    SK: `ACCOUNT#${string}MEAL#${string}`;
     GSI1PK: `MEALS#${string}#${string}`;
     GSI1SK: `MEAL#${string}`;
   };
 
   export type ItemReturnType = Attributes & Keys & { type: EntityType };
+
+  export type PKParams = { mealId: string; accountId: string };
+  export type SKParams = { mealId: string; accountId: string };
+
+  export type GSI1PKParams = { accountId: string; createdAt: Date };
+  export type GSI1SKParams = { mealId: string };
 }
