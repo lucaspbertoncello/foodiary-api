@@ -6,6 +6,7 @@ export class AppConfig {
   public readonly auth: AppConfig.Auth;
   public readonly database: AppConfig.Database;
   public readonly storage: AppConfig.Storage;
+  public readonly devMode: boolean;
 
   constructor() {
     this.auth = {
@@ -23,6 +24,8 @@ export class AppConfig {
     this.storage = {
       s3: { mealsBucket: { name: env.MEALS_BUCKET_NAME } },
     };
+
+    this.devMode = env.DEV_MODE;
   }
 }
 
