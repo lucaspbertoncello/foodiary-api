@@ -6,7 +6,11 @@ import { CreateMealBody, createMealSchema } from "./_schemas/create-meal.schema"
 
 @Injectable()
 @Schema(createMealSchema)
-export class CreateMealController extends Controller<"private", CreateMealController.Response> {
+export class CreateMealController extends Controller<
+  "private",
+  CreateMealController.Response,
+  CreateMealBody
+> {
   constructor(private readonly createMealUseCase: CreateMealUseCase) {
     super();
   }

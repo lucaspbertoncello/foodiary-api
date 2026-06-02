@@ -6,7 +6,11 @@ import { ResetPasswordBody, resetPasswordSchema } from "./_schemas/reset-passwor
 
 @Injectable()
 @Schema(resetPasswordSchema)
-export class ResetPasswordController extends Controller<"public", ResetPasswordController.Response> {
+export class ResetPasswordController extends Controller<
+  "public",
+  ResetPasswordController.Response,
+  ResetPasswordBody
+> {
   constructor(private readonly resetPasswordUseCase: ResetPasswordUseCase) {
     super();
   }

@@ -2,10 +2,20 @@ import { Controller } from "@application/contracts/controller.contract";
 import { Meal } from "@application/entities/meal.entity";
 import { ListMealsByDateQuery } from "@application/queries/list-meals-by-date.query";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
-import { listMealsByDateSchema } from "./_schemas/list-meals-by-date.schema";
+import {
+  ListMealsByDateQueryParams,
+  listMealsByDateSchema,
+} from "./_schemas/list-meals-by-date.schema";
 
 @Injectable()
-export class ListMealsByDateController extends Controller<"private", ListMealsByDateController.Response> {
+export class ListMealsByDateController extends Controller<
+  "private",
+  ListMealsByDateController.Response,
+  Record<string, unknown>,
+  Record<string, unknown>,
+  Record<string, unknown>,
+  ListMealsByDateQueryParams
+> {
   constructor(private readonly listMealsByDateQuery: ListMealsByDateQuery) {
     super();
   }
@@ -13,7 +23,13 @@ export class ListMealsByDateController extends Controller<"private", ListMealsBy
   protected override async handle({
     queryParams,
     accountId,
-  }: Controller.HttpRequest<"private">): Promise<
+  }: Controller.HttpRequest<
+    "private",
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>,
+    ListMealsByDateQueryParams
+  >): Promise<
     Controller.HttpResponse<ListMealsByDateController.Response>
   > {
     const { date } = listMealsByDateSchema.parse(queryParams);

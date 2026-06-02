@@ -6,7 +6,11 @@ import { RefreshTokenBody, refreshTokenSchema } from "./_schemas/refresh-token.s
 
 @Injectable()
 @Schema(refreshTokenSchema)
-export class RefreshTokenController extends Controller<"public", RefreshTokenController.Response> {
+export class RefreshTokenController extends Controller<
+  "public",
+  RefreshTokenController.Response,
+  RefreshTokenBody
+> {
   constructor(private readonly refreshTokenUseCase: RefreshTokenUseCase) {
     super();
   }

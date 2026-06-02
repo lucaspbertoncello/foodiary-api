@@ -6,7 +6,11 @@ import { ForgotPasswordBody, forgotPasswordSchema } from "./_schemas/forgot-pass
 
 @Injectable()
 @Schema(forgotPasswordSchema)
-export class ForgotPasswordController extends Controller<"public", ForgotPasswordController.Response> {
+export class ForgotPasswordController extends Controller<
+  "public",
+  ForgotPasswordController.Response,
+  ForgotPasswordBody
+> {
   constructor(private readonly forgotPasswordUseCase: ForgotPasswordUseCase) {
     super();
   }

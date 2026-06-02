@@ -1,25 +1,32 @@
 import { getSchema } from "@kernel/decorators/schema.decorator";
 
-export abstract class Controller<TRouteType extends Controller.RouteType, TControlerReponse> {
+export abstract class Controller<
+  TRouteType extends Controller.RouteType,
+  TControlerReponse,
+  TBody = Record<string, unknown>,
+  THeaders = Record<string, unknown>,
+  TParams = Record<string, unknown>,
+  TQueryParams = Record<string, unknown>,
+> {
   protected abstract handle(
-    request: Controller.HttpRequest<TRouteType>,
+    request: Controller.HttpRequest<TRouteType, TBody, THeaders, TParams, TQueryParams>,
   ): Promise<Controller.HttpResponse<TControlerReponse>>;
 
   public execute(
-    request: Controller.HttpRequest<TRouteType>,
+    request: Controller.HttpRequest<TRouteType, TBody, THeaders, TParams, TQueryParams>,
   ): Promise<Controller.HttpResponse<TControlerReponse>> {
     const body = this.validateBody(request.body);
     return this.handle({ ...request, body });
   }
 
-  private validateBody(body: Controller.HttpRequest<TRouteType>["body"]): Record<string, unknown> {
+  private validateBody(body: TBody): TBody {
     const schema = getSchema(this);
 
     if (!schema) {
       return body;
     }
 
-    return schema.parse(body) as Record<string, unknown>;
+    return schema.parse(body) as TBody;
   }
 }
 

@@ -7,4 +7,4 @@ export const listMealsByDateSchema = z.object({
     .transform((date) => new Date(date)),
 });
 
-export type ListMealsByDateQueryParams = z.infer<typeof listMealsByDateSchema>;
+export type ListMealsByDateQueryParams = z.input<typeof listMealsByDateSchema>;
