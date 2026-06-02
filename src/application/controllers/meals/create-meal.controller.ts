@@ -9,7 +9,10 @@ import { CreateMealBody, createMealSchema } from "./_schemas/create-meal.schema"
 export class CreateMealController extends Controller<
   "private",
   CreateMealController.Response,
-  CreateMealBody
+  CreateMealController.Body,
+  CreateMealController.Headers,
+  CreateMealController.Params,
+  CreateMealController.QueryParams
 > {
   constructor(private readonly createMealUseCase: CreateMealUseCase) {
     super();
@@ -18,7 +21,13 @@ export class CreateMealController extends Controller<
   protected override async handle({
     body,
     accountId,
-  }: Controller.HttpRequest<"private", CreateMealBody>): Promise<
+  }: Controller.HttpRequest<
+    "private",
+    CreateMealController.Body,
+    CreateMealController.Headers,
+    CreateMealController.Params,
+    CreateMealController.QueryParams
+  >): Promise<
     Controller.HttpResponse<CreateMealController.Response>
   > {
     const { file } = body;
@@ -32,5 +41,10 @@ export class CreateMealController extends Controller<
 }
 
 export namespace CreateMealController {
+  export type Body = CreateMealBody;
+  export type Headers = Record<string, unknown>;
+  export type Params = Record<string, unknown>;
+  export type QueryParams = Record<string, unknown>;
+
   export type Response = { mealId: string; uploadSignature: string };
 }

@@ -9,7 +9,10 @@ import { RefreshTokenBody, refreshTokenSchema } from "./_schemas/refresh-token.s
 export class RefreshTokenController extends Controller<
   "public",
   RefreshTokenController.Response,
-  RefreshTokenBody
+  RefreshTokenController.Body,
+  RefreshTokenController.Headers,
+  RefreshTokenController.Params,
+  RefreshTokenController.QueryParams
 > {
   constructor(private readonly refreshTokenUseCase: RefreshTokenUseCase) {
     super();
@@ -17,7 +20,13 @@ export class RefreshTokenController extends Controller<
 
   protected override async handle({
     body,
-  }: Controller.HttpRequest<"public", RefreshTokenBody>): Promise<
+  }: Controller.HttpRequest<
+    "public",
+    RefreshTokenController.Body,
+    RefreshTokenController.Headers,
+    RefreshTokenController.Params,
+    RefreshTokenController.QueryParams
+  >): Promise<
     Controller.HttpResponse<RefreshTokenController.Response>
   > {
     const { accessToken, refreshToken } = await this.refreshTokenUseCase.execute({
@@ -32,6 +41,11 @@ export class RefreshTokenController extends Controller<
 }
 
 export namespace RefreshTokenController {
+  export type Body = RefreshTokenBody;
+  export type Headers = Record<string, unknown>;
+  export type Params = Record<string, unknown>;
+  export type QueryParams = Record<string, unknown>;
+
   export type Response = {
     accessToken: string;
     refreshToken: string;

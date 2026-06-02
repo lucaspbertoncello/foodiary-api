@@ -9,7 +9,10 @@ import { ResetPasswordBody, resetPasswordSchema } from "./_schemas/reset-passwor
 export class ResetPasswordController extends Controller<
   "public",
   ResetPasswordController.Response,
-  ResetPasswordBody
+  ResetPasswordController.Body,
+  ResetPasswordController.Headers,
+  ResetPasswordController.Params,
+  ResetPasswordController.QueryParams
 > {
   constructor(private readonly resetPasswordUseCase: ResetPasswordUseCase) {
     super();
@@ -17,7 +20,13 @@ export class ResetPasswordController extends Controller<
 
   protected override async handle({
     body,
-  }: Controller.HttpRequest<"public", ResetPasswordBody>): Promise<
+  }: Controller.HttpRequest<
+    "public",
+    ResetPasswordController.Body,
+    ResetPasswordController.Headers,
+    ResetPasswordController.Params,
+    ResetPasswordController.QueryParams
+  >): Promise<
     Controller.HttpResponse<ResetPasswordController.Response>
   > {
     const { code, email, newPassword } = body;
@@ -35,5 +44,10 @@ export class ResetPasswordController extends Controller<
 }
 
 export namespace ResetPasswordController {
+  export type Body = ResetPasswordBody;
+  export type Headers = Record<string, unknown>;
+  export type Params = Record<string, unknown>;
+  export type QueryParams = Record<string, unknown>;
+
   export type Response = void;
 }

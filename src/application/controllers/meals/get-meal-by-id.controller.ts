@@ -8,9 +8,10 @@ import { GetMealByIdParams, getMealByIdSchema } from "./_schemas/get-meal-by-id.
 export class GetMealById extends Controller<
   "private",
   GetMealById.Response,
-  Record<string, unknown>,
-  Record<string, unknown>,
-  GetMealByIdParams
+  GetMealById.Body,
+  GetMealById.Headers,
+  GetMealById.Params,
+  GetMealById.QueryParams
 > {
   constructor(private readonly getMealByIdUseCase: GetMealByIdUseCase) {
     super();
@@ -21,9 +22,10 @@ export class GetMealById extends Controller<
     params,
   }: Controller.HttpRequest<
     "private",
-    Record<string, unknown>,
-    Record<string, unknown>,
-    GetMealByIdParams
+    GetMealById.Body,
+    GetMealById.Headers,
+    GetMealById.Params,
+    GetMealById.QueryParams
   >): Promise<Controller.HttpResponse<GetMealById.Response>> {
     const { mealId } = getMealByIdSchema.parse(params);
     const { meal } = await this.getMealByIdUseCase.execute({ accountId, mealId });
@@ -32,6 +34,11 @@ export class GetMealById extends Controller<
 }
 
 export namespace GetMealById {
+  export type Body = Record<string, unknown>;
+  export type Headers = Record<string, unknown>;
+  export type Params = GetMealByIdParams;
+  export type QueryParams = Record<string, unknown>;
+
   export type Response = {
     meal: {
       id: string;

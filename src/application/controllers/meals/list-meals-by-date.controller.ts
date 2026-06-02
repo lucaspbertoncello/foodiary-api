@@ -11,10 +11,10 @@ import {
 export class ListMealsByDateController extends Controller<
   "private",
   ListMealsByDateController.Response,
-  Record<string, unknown>,
-  Record<string, unknown>,
-  Record<string, unknown>,
-  ListMealsByDateQueryParams
+  ListMealsByDateController.Body,
+  ListMealsByDateController.Headers,
+  ListMealsByDateController.Params,
+  ListMealsByDateController.QueryParams
 > {
   constructor(private readonly listMealsByDateQuery: ListMealsByDateQuery) {
     super();
@@ -25,10 +25,10 @@ export class ListMealsByDateController extends Controller<
     accountId,
   }: Controller.HttpRequest<
     "private",
-    Record<string, unknown>,
-    Record<string, unknown>,
-    Record<string, unknown>,
-    ListMealsByDateQueryParams
+    ListMealsByDateController.Body,
+    ListMealsByDateController.Headers,
+    ListMealsByDateController.Params,
+    ListMealsByDateController.QueryParams
   >): Promise<
     Controller.HttpResponse<ListMealsByDateController.Response>
   > {
@@ -43,6 +43,11 @@ export class ListMealsByDateController extends Controller<
 }
 
 export namespace ListMealsByDateController {
+  export type Body = Record<string, unknown>;
+  export type Headers = Record<string, unknown>;
+  export type Params = Record<string, unknown>;
+  export type QueryParams = ListMealsByDateQueryParams;
+
   export type Response = {
     meals: {
       id: string;

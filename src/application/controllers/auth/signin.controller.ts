@@ -6,14 +6,27 @@ import { SigninBody, signinSchema } from "./_schemas/signin.schema";
 
 @Injectable()
 @Schema(signinSchema)
-export class SigninController extends Controller<"public", SigninController.Response, SigninBody> {
+export class SigninController extends Controller<
+  "public",
+  SigninController.Response,
+  SigninController.Body,
+  SigninController.Headers,
+  SigninController.Params,
+  SigninController.QueryParams
+> {
   constructor(private readonly signinUseCase: SigninUseCase) {
     super();
   }
 
   protected override async handle({
     body,
-  }: Controller.HttpRequest<"public", SigninBody>): Promise<
+  }: Controller.HttpRequest<
+    "public",
+    SigninController.Body,
+    SigninController.Headers,
+    SigninController.Params,
+    SigninController.QueryParams
+  >): Promise<
     Controller.HttpResponse<SigninController.Response>
   > {
     const { email, password } = body.account;
@@ -24,5 +37,10 @@ export class SigninController extends Controller<"public", SigninController.Resp
 }
 
 export namespace SigninController {
+  export type Body = SigninBody;
+  export type Headers = Record<string, unknown>;
+  export type Params = Record<string, unknown>;
+  export type QueryParams = Record<string, unknown>;
+
   export type Response = { accessToken: string; refreshToken: string };
 }

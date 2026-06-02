@@ -9,7 +9,10 @@ import { ForgotPasswordBody, forgotPasswordSchema } from "./_schemas/forgot-pass
 export class ForgotPasswordController extends Controller<
   "public",
   ForgotPasswordController.Response,
-  ForgotPasswordBody
+  ForgotPasswordController.Body,
+  ForgotPasswordController.Headers,
+  ForgotPasswordController.Params,
+  ForgotPasswordController.QueryParams
 > {
   constructor(private readonly forgotPasswordUseCase: ForgotPasswordUseCase) {
     super();
@@ -17,7 +20,13 @@ export class ForgotPasswordController extends Controller<
 
   protected override async handle({
     body,
-  }: Controller.HttpRequest<"public", ForgotPasswordBody>): Promise<
+  }: Controller.HttpRequest<
+    "public",
+    ForgotPasswordController.Body,
+    ForgotPasswordController.Headers,
+    ForgotPasswordController.Params,
+    ForgotPasswordController.QueryParams
+  >): Promise<
     Controller.HttpResponse<ForgotPasswordController.Response>
   > {
     const { email } = body;
@@ -30,5 +39,10 @@ export class ForgotPasswordController extends Controller<
 }
 
 export namespace ForgotPasswordController {
+  export type Body = ForgotPasswordBody;
+  export type Headers = Record<string, unknown>;
+  export type Params = Record<string, unknown>;
+  export type QueryParams = Record<string, unknown>;
+
   export type Response = void;
 }
