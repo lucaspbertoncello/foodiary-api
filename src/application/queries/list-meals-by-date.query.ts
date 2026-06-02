@@ -18,6 +18,8 @@ export class ListMealsByDateQuery {
       IndexName: "GSI1",
       ProjectionExpression: "#GSI1PK, #id, #createdAt, #foods, #icons, #name",
       KeyConditionExpression: "#GSI1PK = :GSI1PK",
+      FilterExpression: "#status = :status",
+      ScanIndexForward: false,
       ExpressionAttributeNames: {
         "#GSI1PK": "GSI1PK",
         "#id": "id",
@@ -25,9 +27,11 @@ export class ListMealsByDateQuery {
         "#foods": "foods",
         "#icons": "icons",
         "#name": "name",
+        "#status": "status",
       },
       ExpressionAttributeValues: {
         ":GSI1PK": MealItem.getGSI1PK({ accountId, createdAt: date }),
+        ":status": Meal.Status.SUCCESS,
       },
     });
 
@@ -41,8 +45,6 @@ export class ListMealsByDateQuery {
       icons: item.icons,
       name: item.name,
     }));
-
-    console.log({ Items, items, meals });
 
     return { meals };
   }
