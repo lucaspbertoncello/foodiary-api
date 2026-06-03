@@ -38,6 +38,6 @@ functions:
   - ${file(./sls/functions/meals.yml)}
 
 resources:
-  - ${file(./sls/resources/UserPool.yml)}
-  - ${file(./sls/resources/MainTable.yml)}
-  - ${file(./sls/resources/MealsBucket.yml)}
+  - ${file(./sls/resources/users.pool.yml)}
+  - ${file(./sls/resources/main.table.yml)}
+  - ${file(./sls/resources/meals.bucket.yml)}
