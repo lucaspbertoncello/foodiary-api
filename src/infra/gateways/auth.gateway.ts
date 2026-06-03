@@ -9,34 +9,52 @@ import {
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { cognitoClient } from "@infra/clients/cognito.client";
+import { ConsoleLogger } from "@infra/logger/console.logger";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
 import { AppConfig } from "@shared/config/app.config";
 import { createHmac } from "node:crypto";
 
 @Injectable()
 export class AuthGateway {
-  constructor(private readonly appConfig: AppConfig) {}
+  constructor(
+    private readonly appConfig: AppConfig,
+    private readonly logger: ConsoleLogger,
+  ) {}
 
   public async signup({
     email,
     password,
     internalId,
   }: AuthGateway.SignupParams): Promise<AuthGateway.SignupResult> {
-    const command = new SignUpCommand({
-      ClientId: this.appConfig.auth.cognito.clientId,
-      Username: email,
-      Password: password,
-      SecretHash: this.getSecretHash({ email }),
-      UserAttributes: [{ Name: "custom:internalId", Value: internalId }],
-    });
+    try {
+      const command = new SignUpCommand({
+        ClientId: this.appConfig.auth.cognito.clientId,
+        Username: email,
+        Password: password,
+        SecretHash: this.getSecretHash({ email }),
+        UserAttributes: [{ Name: "custom:internalId", Value: internalId }],
+      });
 
-    const { UserSub: externalId } = await cognitoClient.send(command);
+      const { UserSub: externalId } = await cognitoClient.send(command);
 
-    if (!externalId) {
-      throw new Error(`Cannot signup user: ${email}`);
+      if (!externalId) {
+        throw new Error("Cannot signup user.");
+      }
+
+      return { externalId };
+    } catch (error) {
+      this.logger.error({
+        message: "Cognito signup failed",
+        metadata: {
+          service: "auth",
+          operation: "cognito_signup",
+          accountId: internalId,
+          error,
+        },
+      });
+
+      throw error;
     }
-
-    return { externalId };
   }
 
   public async signin({ email, password }: AuthGateway.SigninParams): Promise<AuthGateway.SigninResult> {
@@ -94,13 +112,26 @@ export class AuthGateway {
   public async forgotPassword({
     email,
   }: AuthGateway.ForgotPasswordParams): Promise<AuthGateway.ForgotPasswordResult> {
-    const command = new ForgotPasswordCommand({
-      ClientId: this.appConfig.auth.cognito.clientId,
-      Username: email,
-      SecretHash: this.getSecretHash({ email }),
-    });
+    try {
+      const command = new ForgotPasswordCommand({
+        ClientId: this.appConfig.auth.cognito.clientId,
+        Username: email,
+        SecretHash: this.getSecretHash({ email }),
+      });
 
-    await cognitoClient.send(command);
+      await cognitoClient.send(command);
+    } catch (error) {
+      this.logger.error({
+        message: "Cognito forgot password failed",
+        metadata: {
+          service: "auth",
+          operation: "cognito_forgot_password",
+          error,
+        },
+      });
+
+      throw error;
+    }
   }
 
   public async resetPassword({
@@ -108,26 +139,52 @@ export class AuthGateway {
     email,
     newPassword,
   }: AuthGateway.ResetPasswordParams): Promise<AuthGateway.ResetPasswordResult> {
-    const command = new ConfirmForgotPasswordCommand({
-      ClientId: this.appConfig.auth.cognito.clientId,
-      ConfirmationCode: code,
-      Password: newPassword,
-      Username: email,
-      SecretHash: this.getSecretHash({ email }),
-    });
+    try {
+      const command = new ConfirmForgotPasswordCommand({
+        ClientId: this.appConfig.auth.cognito.clientId,
+        ConfirmationCode: code,
+        Password: newPassword,
+        Username: email,
+        SecretHash: this.getSecretHash({ email }),
+      });
 
-    await cognitoClient.send(command);
+      await cognitoClient.send(command);
+    } catch (error) {
+      this.logger.error({
+        message: "Cognito reset password failed",
+        metadata: {
+          service: "auth",
+          operation: "cognito_reset_password",
+          error,
+        },
+      });
+
+      throw error;
+    }
   }
 
   public async deleteUser({
     externalId,
   }: AuthGateway.DeleteUserParams): Promise<AuthGateway.DeleteUserResult> {
-    const command = new AdminDeleteUserCommand({
-      UserPoolId: this.appConfig.auth.cognito.poolId,
-      Username: externalId,
-    });
+    try {
+      const command = new AdminDeleteUserCommand({
+        UserPoolId: this.appConfig.auth.cognito.poolId,
+        Username: externalId,
+      });
 
-    await cognitoClient.send(command);
+      await cognitoClient.send(command);
+    } catch (error) {
+      this.logger.error({
+        message: "Cognito delete user failed",
+        metadata: {
+          service: "auth",
+          operation: "cognito_delete_user",
+          error,
+        },
+      });
+
+      throw error;
+    }
   }
 
   private getSecretHash({ email }: { email: string }): string {

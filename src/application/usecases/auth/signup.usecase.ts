@@ -6,6 +6,7 @@ import { GoalCalculatorService } from "@application/services/goal-calculator.ser
 import { AccountRepository } from "@infra/database/dynamo/repositories/account.repository";
 import { SignupUnitOfWork } from "@infra/database/dynamo/uow/signup.uow";
 import { AuthGateway } from "@infra/gateways/auth.gateway";
+import { ConsoleLogger } from "@infra/logger/console.logger";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
 import { Saga } from "@shared/saga/saga";
 
@@ -16,6 +17,7 @@ export class SignupUseCase {
     private readonly accountRepository: AccountRepository,
     private readonly signupUnitOfWork: SignupUnitOfWork,
     private readonly saga: Saga,
+    private readonly logger: ConsoleLogger,
   ) {}
 
   public async execute({
@@ -23,9 +25,19 @@ export class SignupUseCase {
     profileInfo,
   }: SignupUseCase.Input): Promise<SignupUseCase.Output> {
     return await this.saga.run<SignupUseCase.Output>(async () => {
+      this.logger.debug({
+        message: "Signup started",
+        metadata: { service: "auth", operation: "signup" },
+      });
+
       const emailAlreadyInUse = await this.accountRepository.findByEmail({ email });
 
       if (emailAlreadyInUse) {
+        this.logger.warn({
+          message: "Signup rejected because email already exists",
+          metadata: { service: "auth", operation: "signup" },
+        });
+
         throw new EmailAlreadyExists({});
       }
 
@@ -50,6 +62,11 @@ export class SignupUseCase {
       // atomicidade de operacoes do dynamo
       await this.signupUnitOfWork.run({ account, goal, profile });
       const { accessToken, refreshToken } = await this.authGateway.signin({ email, password });
+
+      this.logger.info({
+        message: "Signup completed",
+        metadata: { service: "auth", operation: "signup", accountId: account.id },
+      });
 
       return { accessToken, refreshToken };
     });

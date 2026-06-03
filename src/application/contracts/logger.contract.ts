@@ -1,20 +1,31 @@
+import { HttpMethod } from "@shared/@types/http-method.type";
+
 export abstract class Logger {
   protected abstract write({ message, type, metadata }: Logger.WriteParams): void;
+  protected abstract shouldLog(type: Logger.LogType): boolean;
 
   public debug(params: Logger.Params) {
-    this.write({ type: Logger.LogType.DEBUG, ...params });
+    this.log({ type: Logger.LogType.DEBUG, ...params });
   }
 
   public info(params: Logger.Params) {
-    this.write({ type: Logger.LogType.INFO, ...params });
+    this.log({ type: Logger.LogType.INFO, ...params });
   }
 
   public warn(params: Logger.Params) {
-    this.write({ type: Logger.LogType.WARN, ...params });
+    this.log({ type: Logger.LogType.WARN, ...params });
   }
 
   public error(params: Logger.Params) {
-    this.write({ type: Logger.LogType.ERROR, ...params });
+    this.log({ type: Logger.LogType.ERROR, ...params });
+  }
+
+  private log(params: Logger.WriteParams): void {
+    if (!this.shouldLog(params.type)) {
+      return;
+    }
+
+    this.write(params);
   }
 }
 
@@ -36,9 +47,11 @@ export namespace Logger {
   export type LogMetadata = {
     accountId?: string | null;
     requestId?: string;
-    httpMethod?: "PUT" | "POST" | "PATCH" | "DELETE" | "GET";
+    httpMethod?: HttpMethod;
     route?: string;
-    error?: { name: string; message: string };
+    statusCode?: number;
+    durationMs?: number;
+    error?: unknown;
     service: string;
     operation: string;
   };
