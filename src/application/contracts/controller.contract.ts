@@ -2,7 +2,7 @@ import { getSchema } from "@kernel/decorators/schema.decorator";
 
 export abstract class Controller<
   TRouteType extends Controller.RouteType,
-  TControlerReponse,
+  TControlerReponse = undefined,
   TBody = Record<string, unknown>,
   THeaders = Record<string, unknown>,
   TParams = Record<string, unknown>,
