@@ -4,3 +4,23 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: ${self:service}-${self:provider.stage}-meals-foodiary-bucket
+
+  MealsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MealsBucket
+      PolicyDocument:
+        Version: "2008-10-17"
+        Id: PolicyForCloudFrontPrivateContent
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipal
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+
+            Action: s3:GetObject
+
+            Resource: !Sub "${MealsBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${MealsBucketCDN}"

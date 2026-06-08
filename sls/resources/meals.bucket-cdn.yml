@@ -1,0 +1,42 @@
+Resources:
+  # aqui esta configurado o permissionamento de acesso da CDN para o bucket
+  # o OAC faz com que a CDN mande requests autenticadas para o Bucket privado do s3
+  MealsBucketOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Description: OAC for MealsBucketCDN
+        Name: MealsBucketOAC
+        SigningBehavior: always
+        SigningProtocol: sigv4
+        OriginAccessControlOriginType: s3
+
+  # configuracao da instancia da nossa CDN
+  # usuario -> cloudfront verifica se tem os dados no cache -> se tiver, devolve pro usuario -> se nao, busca no bucket de origem e atualiza o cache
+  MealsBucketCDN:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        HttpVersion: http2and3
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        Origins:
+          # o cloud front vai buscar os dados nesse bucket para cada region
+          - Id: S3Origin
+            # isso esta vazio, porque apenas precisamos especificar essa propriedade obrigatoriamente
+            # fallbacks: vpc ou custom origin
+            S3OriginConfig: {}
+            DomainName: !GetAtt MealsBucket.RegionalDomainName
+            OriginAccessControlId: !Ref MealsBucketOAC
+        DefaultCacheBehavior:
+          Compress: true
+          ViewerProtocolPolicy: redirect-to-https
+          TargetOriginId: S3Origin
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # aws managed cache policy (optimized for s3)
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
