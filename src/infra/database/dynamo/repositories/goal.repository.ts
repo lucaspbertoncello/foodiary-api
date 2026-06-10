@@ -36,7 +36,7 @@ export class GoalRepository {
       },
 
       UpdateExpression:
-        "SET #calories = :calories, #carbohydrates = :carbohydrates, #fats = :fats, #proteins = :proteins, ",
+        "SET #calories = :calories, #carbohydrates = :carbohydrates, #fats = :fats, #proteins = :proteins",
 
       ExpressionAttributeNames: {
         "#calories": "calories",
