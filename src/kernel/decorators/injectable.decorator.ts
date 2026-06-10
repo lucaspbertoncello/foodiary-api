@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import { Registry } from "@kernel/container/registry";
 import { Constructor } from "@shared/@types/constructor.type";
 
