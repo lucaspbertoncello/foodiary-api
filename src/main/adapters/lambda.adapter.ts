@@ -2,7 +2,7 @@ import { ApplicationError } from "@application/contracts/application-error.contr
 import { HttpError } from "@application/contracts/http-error.contract";
 import { ErrorCode } from "@application/errors/error-code";
 import { ConsoleLogger } from "@infra/logger/console.logger";
-import { Registry } from "@kernel/di/registry";
+import { Registry } from "@kernel/container/registry";
 import { lambdaBodyParser } from "@main/utils/lambda-body-parser";
 import { lambdaErrorResponse } from "@main/utils/lambda-error-response";
 import { Constructor } from "@shared/@types/constructor.type";

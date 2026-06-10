@@ -1,4 +1,4 @@
-import { Registry } from "@kernel/di/registry";
+import { Registry } from "@kernel/container/registry";
 import { Constructor } from "@shared/@types/constructor.type";
 
 export function Injectable(): ClassDecorator {
