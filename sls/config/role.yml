@@ -4,6 +4,7 @@ statements:
       - dynamodb:PutItem
       - dynamodb:GetItem
       - dynamodb:Query
+      - dynamodb:UpdateItem
     Resource:
       - !GetAtt MainTable.Arn
       - !Sub "${MainTable.Arn}/index/*"

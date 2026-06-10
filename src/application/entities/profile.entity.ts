@@ -1,10 +1,10 @@
 export class Profile {
   public readonly accountId: string;
-  public readonly name: string;
-  public readonly birthDate: Date;
-  public readonly gender: Profile.Gender;
-  public readonly height: number;
-  public readonly weight: number;
+  public name: string;
+  public birthDate: Date;
+  public gender: Profile.Gender;
+  public height: number;
+  public weight: number;
   public readonly goal: Profile.Goal;
   public readonly activityLevel: Profile.ActivityLevel;
   public readonly createdAt: Date;

@@ -29,7 +29,7 @@ export class ProfileItem {
     };
   }
 
-  public toDomain(attr: ProfileItem.Attributes): Profile {
+  public static toDomain(attr: ProfileItem.Attributes): Profile {
     return new Profile({
       ...attr,
       birthDate: new Date(attr.birthDate),
