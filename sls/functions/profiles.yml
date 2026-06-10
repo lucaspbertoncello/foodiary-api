@@ -3,6 +3,6 @@ updateProfile:
   events:
     - httpApi:
         path: /profile
-        method: PATCH
+        method: PUT
         authorizer:
           name: CognitoAuthorizer
