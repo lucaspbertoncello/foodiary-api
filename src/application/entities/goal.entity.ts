@@ -1,9 +1,9 @@
 export class Goal implements Goal.Attributes {
   public readonly accountId: string;
-  public readonly calories: number;
-  public readonly proteins: number;
-  public readonly carbohydrates: number;
-  public readonly fats: number;
+  public calories: number;
+  public proteins: number;
+  public carbohydrates: number;
+  public fats: number;
   public readonly createdAt: Date;
 
   constructor(attr: Goal.Attributes) {

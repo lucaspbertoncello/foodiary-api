@@ -28,7 +28,7 @@ export class GoalItem {
     };
   }
 
-  public toDomain(attr: GoalItem.Attributes): Goal {
+  public static toDomain(attr: GoalItem.Attributes): Goal {
     return new Goal({
       ...attr,
       createdAt: new Date(attr.createdAt),
