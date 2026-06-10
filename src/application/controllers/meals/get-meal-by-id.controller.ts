@@ -45,7 +45,7 @@ export namespace GetMealById {
       id: string;
       status: Meal.Status;
       inputType: Meal.InputType;
-      inputFileKey: string;
+      inputFileUrl: string;
       name: string;
       icons: string;
       foods: Meal.Food[];

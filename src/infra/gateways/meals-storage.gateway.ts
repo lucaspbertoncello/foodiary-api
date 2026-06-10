@@ -63,6 +63,11 @@ export class MealsStorageGateway {
       throw error;
     }
   }
+
+  public getFileUrl({ inputFileKey }: { inputFileKey: string }) {
+    const cdn = this.appConfig.cdn.mealsCdn.domainName;
+    return `https://${cdn}/${inputFileKey}`;
+  }
 }
 
 export namespace MealsStorageGateway {

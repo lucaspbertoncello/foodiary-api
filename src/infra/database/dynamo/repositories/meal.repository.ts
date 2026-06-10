@@ -10,8 +10,8 @@ export class MealRepository {
   constructor(private readonly appConfig: AppConfig) {}
 
   public getPutCommandInput(meal: Meal): PutCommandInput {
-    const profileItem = MealItem.getInstanceFromEntity(meal);
-    return { TableName: this.appConfig.database.dynamoDb.tableName, Item: profileItem.toItem() };
+    const mealItem = MealItem.getInstanceFromEntity(meal);
+    return { TableName: this.appConfig.database.dynamoDb.tableName, Item: mealItem.toItem() };
   }
 
   public async save(meal: Meal): Promise<void> {

@@ -6,6 +6,7 @@ export class AppConfig {
   public readonly auth: AppConfig.Auth;
   public readonly database: AppConfig.Database;
   public readonly storage: AppConfig.Storage;
+  public readonly cdn: AppConfig.CDN;
   public readonly devMode: boolean;
 
   constructor() {
@@ -25,6 +26,10 @@ export class AppConfig {
       s3: { mealsBucket: { name: env.MEALS_BUCKET_NAME } },
     };
 
+    this.cdn = {
+      mealsCdn: { domainName: env.MEALS_CDN_DOMAIN_NAME },
+    };
+
     this.devMode = env.DEV_MODE;
   }
 }
@@ -40,5 +45,9 @@ export namespace AppConfig {
 
   export type Storage = {
     s3: { mealsBucket: { name: string } };
+  };
+
+  export type CDN = {
+    mealsCdn: { domainName: string };
   };
 }
