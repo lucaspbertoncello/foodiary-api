@@ -7,6 +7,8 @@ export const updateProfileSchema = z.object({
   gender: z.enum(Profile.Gender, "$gender must be a valid gender"),
   height: z.number("$height must be a number"),
   weight: z.number("$weight must be a number"),
+  goal: z.enum(Profile.Goal, "$goal must be a valid goal"),
+  activityLevel: z.enum(Profile.ActivityLevel, "$activityLevel must be a valid activity level"),
 });
 
 export type UpdateProfileBody = z.infer<typeof updateProfileSchema>;

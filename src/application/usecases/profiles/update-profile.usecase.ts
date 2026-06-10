@@ -9,8 +9,10 @@ export class UpdateProfileUseCase {
 
   public async execute({
     accountId,
+    activityLevel,
     birthDate,
     gender,
+    goal,
     height,
     name,
     weight,
@@ -23,9 +25,11 @@ export class UpdateProfileUseCase {
 
     profile.birthDate = birthDate;
     profile.gender = gender;
+    profile.goal = goal;
     profile.height = height;
     profile.name = name;
     profile.weight = weight;
+    profile.activityLevel = activityLevel;
 
     await this.profileRepository.update(profile);
   }
@@ -36,7 +40,9 @@ export namespace UpdateProfileUseCase {
     accountId: string;
     name: string;
     birthDate: Date;
+    activityLevel: Profile.ActivityLevel;
     gender: Profile.Gender;
+    goal: Profile.Goal;
     height: number;
     weight: number;
   };

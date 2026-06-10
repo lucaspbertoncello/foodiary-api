@@ -21,28 +21,32 @@ export class ProfileRepository {
   }
 
   public async update(profile: Profile): Promise<void> {
-    const { SK, PK, name, gender, birthDate, weight, height } =
+    const { SK, PK, name, gender, birthDate, weight, height, goal, activityLevel } =
       ProfileItem.getInstanceFromEntity(profile).toItem();
 
     const command = new UpdateCommand({
       TableName: this.appConfig.database.dynamoDb.tableName,
       Key: { PK, SK },
       UpdateExpression:
-        "SET #name = :name, #gender = :gender, #gender = :gender, #birthdate = :birthdate, #height = :height, #weight = :weight",
+        "SET #name = :name, #gender = :gender, #birthDate = :birthDate, #height = :height, #weight = :weight, #goal = :goal, #activityLevel = :activityLevel",
 
       ExpressionAttributeNames: {
         "#name": "name",
-        "#gender": "name",
-        "#birthdate": "name",
-        "#height": "name",
-        "#weight": "name",
+        "#gender": "gender",
+        "#birthDate": "birthDate",
+        "#height": "height",
+        "#weight": "weight",
+        "#goal": "goal",
+        "#activityLevel": "activityLevel",
       },
       ExpressionAttributeValues: {
         ":name": name,
         ":gender": gender,
-        ":birthdate": birthDate,
+        ":birthDate": birthDate,
         ":height": height,
         ":weight": weight,
+        ":goal": goal,
+        ":activityLevel": activityLevel,
       },
     });
 
