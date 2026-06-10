@@ -7,7 +7,7 @@ import { Injectable } from "@kernel/decorators/injectable.decorator";
 export class GetMealByIdUseCase {
   constructor(private readonly mealsRepository: MealRepository) {}
 
-  public async execute({ mealId, accountId }: GetMealById.Input): Promise<GetMealById.Output> {
+  public async execute({ mealId, accountId }: GetMealByIdUseCase.Input): Promise<GetMealByIdUseCase.Output> {
     const meal = await this.mealsRepository.findById({ mealId, accountId });
 
     if (!meal) {
@@ -29,7 +29,7 @@ export class GetMealByIdUseCase {
   }
 }
 
-export namespace GetMealById {
+export namespace GetMealByIdUseCase {
   export type Input = { mealId: string; accountId: string };
 
   export type Output = {
