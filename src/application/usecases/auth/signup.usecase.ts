@@ -8,7 +8,7 @@ import { SignupUnitOfWork } from "@infra/database/dynamo/uow/signup.uow";
 import { AuthGateway } from "@infra/gateways/auth.gateway";
 import { ConsoleLogger } from "@infra/logger/console.logger";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
-import { Saga } from "@shared/saga/saga";
+import { Saga } from "@kernel/saga/saga";
 
 @Injectable()
 export class SignupUseCase {
