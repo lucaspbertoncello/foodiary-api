@@ -5,6 +5,7 @@ statements:
       - dynamodb:GetItem
       - dynamodb:Query
       - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
     Resource:
       - !GetAtt MainTable.Arn
       - !Sub "${MainTable.Arn}/index/*"
@@ -15,6 +16,8 @@ statements:
       - !GetAtt UserPool.Arn
 
   - Effect: Allow
-    Action: s3:PutObject
+    Action:
+      - s3:PutObject
+      - s3:DeleteObject
     Resource:
       - !Sub "${MealsBucket.Arn}/*"

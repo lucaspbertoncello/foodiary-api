@@ -1,4 +1,5 @@
 import { Meal } from "@application/entities/meal.entity";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { s3Client } from "@infra/clients/s3.client";
 import { ConsoleLogger } from "@infra/logger/console.logger";
@@ -68,6 +69,15 @@ export class MealsStorageGateway {
     const cdn = this.appConfig.cdn.mealsCdn.domainName;
     return `https://${cdn}/${inputFileKey}`;
   }
+
+  public async deleteFile({ inputFileKey }: MealsStorageGateway.DeleteFileParams): Promise<void> {
+    const command = new DeleteObjectCommand({
+      Bucket: this.appConfig.storage.s3.mealsBucket.name,
+      Key: inputFileKey,
+    });
+
+    await s3Client.send(command);
+  }
 }
 
 export namespace MealsStorageGateway {
@@ -86,4 +96,5 @@ export namespace MealsStorageGateway {
     mealId: string;
   };
   export type CreatePresignedPostResult = { uploadSignature: string };
+  export type DeleteFileParams = { inputFileKey: string };
 }

@@ -24,3 +24,12 @@ getMealById:
         method: GET
         authorizer:
           name: CognitoAuthorizer
+
+deleteMeal:
+  handler: src/main/functions/meals/delete-meal.handler
+  events:
+    - httpApi:
+        path: /meals/{mealId}
+        method: DELETE
+        authorizer:
+          name: CognitoAuthorizer

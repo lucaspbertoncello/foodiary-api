@@ -1,5 +1,5 @@
 import { Meal } from "@application/entities/meal.entity";
-import { GetCommand, PutCommand, PutCommandInput } from "@aws-sdk/lib-dynamodb";
+import { DeleteCommand, GetCommand, PutCommand, PutCommandInput } from "@aws-sdk/lib-dynamodb";
 import { dynamoClient } from "@infra/clients/dynamo.client";
 import { Injectable } from "@kernel/decorators/injectable.decorator";
 import { AppConfig } from "@shared/config/app.config";
@@ -40,9 +40,22 @@ export class MealRepository {
 
     return MealItem.toDomain(meal as MealItem.ItemReturnType);
   }
+
+  public async delete({ mealId, accountId }: MealRepository.DeleteInput): Promise<void> {
+    const command = new DeleteCommand({
+      TableName: this.appConfig.database.dynamoDb.tableName,
+      Key: {
+        PK: MealItem.getPk({ mealId, accountId }),
+        SK: MealItem.getSk({ mealId, accountId }),
+      },
+    });
+
+    await dynamoClient.send(command);
+  }
 }
 
 export namespace MealRepository {
   export type FindByIdInput = { mealId: string; accountId: string };
   export type FindByIdOutput = Meal | null;
+  export type DeleteInput = { mealId: string; accountId: string };
 }
