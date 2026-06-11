@@ -4,7 +4,6 @@ Resources:
     Properties:
       QueueName: ${self:service}-${self:provider.stage}-MealsQueue
       VisibilityTimeout: 130
-      FifoQueue: false
       MessageRetentionPeriod: 1209600
       ReceiveMessageWaitTimeSeconds: 20
       RedrivePolicy:
