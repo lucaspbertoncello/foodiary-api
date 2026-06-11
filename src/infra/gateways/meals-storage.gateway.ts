@@ -27,6 +27,7 @@ export class MealsStorageGateway {
   public async createPresignedPost({
     file,
     mealId,
+    accountId,
   }: MealsStorageGateway.CreatePresignedPostParams): Promise<MealsStorageGateway.CreatePresignedPostResult> {
     const { fileKey, fileSize, inputType } = file;
 
@@ -39,7 +40,7 @@ export class MealsStorageGateway {
         Bucket: bucket,
         Key: fileKey,
         Expires: FIVE_MIN_IN_SECS,
-        Fields: { "Content-type": extension, "x-amz-meta-mealid": mealId },
+        Fields: { "Content-type": extension, "x-amz-meta-mealid": mealId, "x-amz-meta-accountid": accountId },
         Conditions: [
           { bucket },
           ["eq", "$key", fileKey],
@@ -94,6 +95,7 @@ export namespace MealsStorageGateway {
       fileSize: number;
     };
     mealId: string;
+    accountId: string;
   };
   export type CreatePresignedPostResult = { uploadSignature: string };
   export type DeleteFileParams = { inputFileKey: string };
