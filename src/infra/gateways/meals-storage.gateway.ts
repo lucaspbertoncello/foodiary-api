@@ -1,5 +1,5 @@
 import { Meal } from "@application/entities/meal.entity";
-import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { s3Client } from "@infra/clients/s3.client";
 import { ConsoleLogger } from "@infra/logger/console.logger";
@@ -79,6 +79,26 @@ export class MealsStorageGateway {
 
     await s3Client.send(command);
   }
+
+  public async getFileMetadata({
+    fileKey,
+  }: MealsStorageGateway.GetFileMetadataParams): Promise<MealsStorageGateway.GetFileMetadataResult> {
+    const command = new HeadObjectCommand({
+      Bucket: this.appConfig.storage.s3.mealsBucket.name,
+      Key: fileKey,
+    });
+
+    const { Metadata = {} } = await s3Client.send(command);
+
+    if (!Metadata.accountid || !Metadata.mealid) {
+      throw new Error(`Cannot proccess ${fileKey}`);
+    }
+
+    return {
+      accountId: Metadata.accountid,
+      mealId: Metadata.mealid,
+    };
+  }
 }
 
 export namespace MealsStorageGateway {
@@ -99,4 +119,7 @@ export namespace MealsStorageGateway {
   };
   export type CreatePresignedPostResult = { uploadSignature: string };
   export type DeleteFileParams = { inputFileKey: string };
+
+  export type GetFileMetadataParams = { fileKey: string };
+  export type GetFileMetadataResult = { accountId: string; mealId: string };
 }
