@@ -3,13 +3,13 @@ import KSUID from "ksuid";
 export class Meal {
   public readonly id: string;
   public readonly accountId: string;
-  public readonly status: Meal.Status;
+  public status: Meal.Status;
   public readonly inputType: Meal.InputType;
   public readonly inputFileKey: string;
-  public readonly attempts: number;
-  public readonly name: string;
-  public readonly icons: string;
-  public readonly foods: Meal.Food[];
+  public attempts: number;
+  public name: string;
+  public icons: string;
+  public foods: Meal.Food[];
   public readonly createdAt: Date;
 
   constructor(attr: Meal.Attributes) {
