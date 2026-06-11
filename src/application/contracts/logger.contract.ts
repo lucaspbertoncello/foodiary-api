@@ -1,5 +1,3 @@
-import { HttpMethod } from "@shared/@types/http-method.type";
-
 export abstract class Logger {
   protected abstract write({ message, type, metadata }: Logger.WriteParams): void;
   protected abstract shouldLog(type: Logger.LogType): boolean;
@@ -44,17 +42,7 @@ export namespace Logger {
 
   export type LogMessage = string;
 
-  export type LogMetadata = {
-    accountId?: string | null;
-    requestId?: string;
-    httpMethod?: HttpMethod;
-    route?: string;
-    statusCode?: number;
-    durationMs?: number;
-    error?: unknown;
-    service: string;
-    operation: string;
-  };
+  export type LogMetadata = Record<string, unknown>;
 
   export type WriteParams = { type: LogType; message: LogMessage; metadata: LogMetadata };
 
