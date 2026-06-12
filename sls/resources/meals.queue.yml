@@ -15,3 +15,46 @@ Resources:
     Properties:
       QueueName: ${self:service}-${self:provider.stage}-MealsDLQ
       MessageRetentionPeriod: 1209600
+
+  # topico sns que recebe notificacoes de alarme da dlq.
+  MealsDLQAlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      # nome do topico sns criado para alarmes da dlq.
+      TopicName: ${self:service}-${self:provider.stage}-MealsDLQAlarmTopic
+      # assinantes de email que recebem mensagens publicadas no topico.
+      Subscription:
+        - Protocol: email
+          Endpoint: lucasbertoncello1@gmail.com
+
+  # alarme do cloudwatch que dispara quando a dlq de meals tem mensagens para inspecionar.
+  MealsDLQCWAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      # nome que aparece na lista de alarmes do cloudwatch.
+      AlarmName: ${self:service}-${self:provider.stage}-MealsDQLCWAlarm
+      # texto exibido nos detalhes do alarme para explicar o motivo dele existir.
+      AlarmDescription: Triggered when messages are found in MealsDLQ
+      # grupo de metricas da aws onde ficam as metricas publicadas pelo sqs.
+      Namespace: AWS/SQS
+      # contador de mensagens que estao paradas na fila e prontas para serem lidas.
+      MetricName: ApproximateNumberOfMessagesVisible
+      # limita a metrica para a dlq de meals, em vez de olhar todas as filas sqs.
+      Dimensions:
+        - Name: QueueName
+          Value: !GetAtt MealsDLQ.QueueName
+      # define como o cloudwatch resume os valores coletados dentro da janela de avaliacao.
+      Statistic: Average
+      # intervalo, em segundos, usado para calcular cada ponto da metrica.
+      Period: 60
+      # quantidade de janelas consecutivas que o cloudwatch avalia antes de decidir o estado.
+      EvaluationPeriods: 1
+      # regra de comparacao usada entre a metrica calculada e o valor do threshold.
+      ComparisonOperator: GreaterThanThreshold
+      # limite usado na comparacao; com greaterthanthreshold e 0, qualquer mensagem aciona o alarme.
+      Threshold: 0
+      # se nao houver dado da metrica no periodo, o alarme considera isso como nao violado.
+      TreatMissingData: notBreaching
+      # destino chamado quando o alarme muda para alarm; aqui deveria apontar para o topico sns.
+      AlarmActions:
+        - !Ref DLQAlarmsTopic
