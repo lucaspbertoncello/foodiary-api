@@ -42,3 +42,17 @@ onMealFileUploaded:
         event: s3:ObjectCreated:*
         existing: true
         forceDeploy: true
+
+processMeal:
+  handler: src/main/functions/meals/_queues/process-meal.handler
+  memorySize: 1024
+  timeout: 120
+  events:
+    - sqs:
+        arn: !GetAtt MealsQueue.Arn
+        batchSize: 2 # numero maximo de mensagens que pode dentro do event.Records.batch
+        maximumConcurrency: 10 # maximo de lambdas que podem ser invocadas simultaneamente
+        maximumBatchingWindow:
+          10 # tempo que a lambda consumer espera para capturar as mensagens, com fins de acumular
+          # se chegar no numero do batchSize, a lambda eh invocada imediatamente
+        functionResponseType: ReportBatchItemFailures # conseguimos reportar quais mensagens falharam, evitando que as que foram executadas com sucesso sejam tratadas como se tivessem dado erro
