@@ -6,7 +6,7 @@
   "scripts": {
     "deploy": "tsc --noEmit && serverless deploy",
     "deploy:function": "tsc --noEmit && serverless deploy function --function",
-    "logs:function": "tsc --noEmit && serverless logs --function",
+    "logs:function": "tsc --noEmit && serverless logs --tail --function",
     "typecheck": "tsc --noEmit",
     "email:dev": "email dev --dir ./src/shared/emails"
   },
