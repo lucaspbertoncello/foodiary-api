@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "deploy": "tsc --noEmit && serverless deploy",
+    "createMeal": "pnpm tsx scripts/create-meal.script.ts",
     "deploy:function": "tsc --noEmit && serverless deploy function --function",
     "logs:function": "tsc --noEmit && serverless logs --tail --function",
     "typecheck": "tsc --noEmit",
