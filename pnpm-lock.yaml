@@ -29,9 +29,15 @@ importers:
       '@smithy/smithy-client':
         specifier: ^4.13.3
         version: 4.13.3
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       ksuid:
         specifier: ^3.0.0
         version: 3.0.0
+      openai:
+        specifier: ^6.44.0
+        version: 6.44.0(ws@8.18.3)(zod@4.4.3)
       react:
         specifier: 19.2.6
         version: 19.2.6
@@ -1083,6 +1089,10 @@ packages:
     resolution: {integrity: sha512-MVUtAugQMOff5RnBy2d9N31iG0lNwg1qAoAOn7pOK5wf94WIaE3My2p3uwTQuvS2AcqchkcR3bHByjaM0mmi7Q==}
     engines: {node: '>=20'}
 
+  dotenv@17.4.2:
+    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
+    engines: {node: '>=12'}
+
   engine.io-parser@5.2.3:
     resolution: {integrity: sha512-HqD3yTBfnBxIrbnM1DoD6Pcq8NECnh8d4As1Qgh0z5Gg3jRRIqijury0CL3ghu/edArpUYiYqQiDUQBIs4np3Q==}
     engines: {node: '>=10.0.0'}
@@ -1407,6 +1417,17 @@ packages:
 
   obliterator@1.6.1:
     resolution: {integrity: sha512-9WXswnqINnnhOG/5SLimUlzuU1hFJUc8zkwyD59Sd+dPOMf05PmnYG/d6Q7HZ+KmgkZJa1PxRso6QdM3sTNHig==}
+
+  openai@6.44.0:
+    resolution: {integrity: sha512-09/gH+8jH0RgUwsgWHAaxsKGRT5zVZ95IaJUnqAWj6XejIBmnFRwq2WUIF37VtDEsmGrtPmvCs5+yBSeZGWvkA==}
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.25 || ^4.0
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -2898,6 +2919,8 @@ snapshots:
     dependencies:
       type-fest: 5.6.0
 
+  dotenv@17.4.2: {}
+
   engine.io-parser@5.2.3: {}
 
   engine.io@6.6.7:
@@ -3230,6 +3253,11 @@ snapshots:
   object-assign@4.1.1: {}
 
   obliterator@1.6.1: {}
+
+  openai@6.44.0(ws@8.18.3)(zod@4.4.3):
+    optionalDependencies:
+      ws: 8.18.3
+      zod: 4.4.3
 
   optionator@0.9.4:
     dependencies:
