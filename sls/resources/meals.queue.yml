@@ -57,4 +57,4 @@ Resources:
       TreatMissingData: notBreaching
       # destino chamado quando o alarme muda para alarm; aqui deveria apontar para o topico sns.
       AlarmActions:
-        - !Ref DLQAlarmsTopic
+        - !Ref MealsDLQAlarmTopic
