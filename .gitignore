@@ -2,6 +2,7 @@ node_modules
 .serverless
 .env
 .vscode
+.agents
 
 AGENTS.md
 docs/architecture-plans/
